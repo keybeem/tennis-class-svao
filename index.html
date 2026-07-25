@@ -430,6 +430,28 @@ section[id]{scroll-margin-top:calc(var(--header-h) + 8px)}
   padding:9px 15px;border-radius:100px;border:1.5px solid var(--ink);
 }
 .hall-cap svg{width:15px;height:15px;flex:none;color:var(--clay)}
+/* инфо-панель площадки (Self Club) */
+.venue{margin-bottom:44px;border:1.5px solid var(--ink);border-radius:var(--radius);background:var(--cream);overflow:hidden}
+.venue-head{display:flex;align-items:center;justify-content:space-between;gap:14px 24px;flex-wrap:wrap;padding:20px 26px;background:var(--cream-soft);border-bottom:1.5px solid var(--line)}
+.venue-addr{display:flex;align-items:center;gap:12px;font-family:"Unbounded",sans-serif;font-weight:600;font-size:clamp(17px,2.1vw,23px)}
+.venue-addr svg{width:22px;height:22px;flex:none;color:var(--clay)}
+.venue-addr i{font-style:normal;color:var(--clay-deep)}
+.venue-map{display:inline-flex;align-items:center;gap:8px;font-family:"Unbounded",sans-serif;font-size:12.5px;font-weight:600;color:var(--ink);border-bottom:1.5px dashed rgba(29,47,34,.4);padding-bottom:3px;transition:color .2s,border-color .2s}
+.venue-map:hover{color:var(--clay-deep);border-color:var(--clay-deep)}
+.venue-map svg{width:15px;height:15px;flex:none}
+.venue-facts{display:grid;grid-template-columns:repeat(3,1fr)}
+.vfact{display:flex;gap:14px;align-items:flex-start;padding:22px 26px;border-right:1.5px solid var(--line)}
+.vfact:last-child{border-right:none}
+.vfact .vico{width:42px;height:42px;border-radius:50%;border:1.5px solid var(--ink);display:grid;place-items:center;flex:none;color:var(--clay-deep)}
+.vfact .vico svg{width:21px;height:21px}
+.vfact b{display:block;font-family:"Unbounded",sans-serif;font-size:14px;font-weight:600;line-height:1.25}
+.vfact span{display:block;font-size:13px;color:#4a584e;margin-top:4px}
+.venue-amenities{padding:22px 26px;border-top:1.5px solid var(--line)}
+.amen-label{font-size:13px;font-weight:600;color:var(--clay-deep)}
+.amen-label b{font-family:"Unbounded",sans-serif}
+.amen-list{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.amen-list li{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;padding:8px 14px;border-radius:100px;border:1.2px solid var(--ink);background:var(--cream)}
+.amen-list li::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--ball);border:1px solid var(--ink);flex:none}
 
 /* ============================================================
    ЦЕНЫ — сравнение планов, «меловые» пунктиры, CTA на каждой
@@ -674,6 +696,9 @@ section[id]{scroll-margin-top:calc(var(--header-h) + 8px)}
 
   .halls-gallery{grid-template-columns:1fr;gap:14px}
   .hall-hero{aspect-ratio:3/2}
+  .venue-facts{grid-template-columns:1fr}
+  .vfact{border-right:none;border-bottom:1.5px solid var(--line)}
+  .vfact:last-child{border-bottom:none}
 
   .contact::after{inset:12px}
   .locations{grid-template-columns:1fr;margin-top:32px}
@@ -980,15 +1005,52 @@ section[id]{scroll-margin-top:calc(var(--header-h) + 8px)}
         <span class="num">04 · Залы</span>
         <h2>Где мы играем</h2>
       </div>
-      <p>Крытый теннисный зал на&nbsp;Верхоянской — играем круглый год в&nbsp;тепле, при профессиональном свете и&nbsp;разметке.</p>
+      <p>Наш дом — спортивный клуб <b>Self&nbsp;Club</b> на&nbsp;Верхоянской: крытый корт, тепло и&nbsp;профессиональный свет круглый год.</p>
     </div>
+
+    <div class="venue sr">
+      <div class="venue-head">
+        <span class="venue-addr">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><path d="M12 21s-6.5-5.5-6.5-10a6.5 6.5 0 0 1 13 0c0 4.5-6.5 10-6.5 10z"/><circle cx="12" cy="10.7" r="2.3"/></svg>
+          ул.&nbsp;Верхоянская,&nbsp;9 <i>· м.&nbsp;Свиблово</i>
+        </span>
+        <a class="venue-map" href="https://yandex.ru/maps/?text=Москва,%20Верхоянская%209" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><path d="M12 21s-6.5-5.5-6.5-10a6.5 6.5 0 0 1 13 0c0 4.5-6.5 10-6.5 10z"/><circle cx="12" cy="10.7" r="2.3"/></svg>
+          Схема проезда
+        </a>
+      </div>
+      <div class="venue-facts">
+        <div class="vfact">
+          <span class="vico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M8 15.5V9l4 4 4-4v6.5"/></svg></span>
+          <div><b>м.&nbsp;Свиблово</b><span>шаговая доступность, ~10&nbsp;мин пешком</span></div>
+        </div>
+        <div class="vfact">
+          <span class="vico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="4.5"/><path d="M9 17V8h3.4a2.7 2.7 0 0 1 0 5.4H9"/></svg></span>
+          <div><b>Бесплатная парковка</b><span>наземная, для&nbsp;гостей клуба</span></div>
+        </div>
+        <div class="vfact">
+          <span class="vico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 1.8"/></svg></span>
+          <div><b>Ежедневно 07:00–00:00</b><span>крытый корт — играем круглый год</span></div>
+        </div>
+      </div>
+      <div class="venue-amenities">
+        <span class="amen-label">В клубе <b>Self&nbsp;Club</b> — всё под одной крышей:</span>
+        <ul class="amen-list" aria-label="Удобства клуба">
+          <li>Крытый теннисный корт</li>
+          <li>Бассейн</li>
+          <li>Сауны и банный комплекс</li>
+          <li>Спа и салон красоты</li>
+          <li>Тренажёрный зал</li>
+          <li>Ресторан</li>
+          <li>Просторные раздевалки</li>
+          <li>Детская комната</li>
+        </ul>
+      </div>
+    </div>
+
     <div class="halls-gallery">
       <figure class="hall hall-hero sr dl1">
         <img src="img/hall-1.jpg" alt="Крытый теннисный корт на Верхоянской — вид от задней линии" loading="lazy" decoding="async">
-        <figcaption class="hall-cap">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><path d="M12 21s-6.5-5.5-6.5-10a6.5 6.5 0 0 1 13 0c0 4.5-6.5 10-6.5 10z"/><circle cx="12" cy="10.7" r="2.3"/></svg>
-          Верхоянская, 9 · м.&nbsp;Свиблово
-        </figcaption>
       </figure>
       <figure class="hall sr dl2">
         <img src="img/hall-2.jpg" alt="Теннисный корт с высоким потолком и профессиональным освещением" loading="lazy" decoding="async">
