@@ -22,6 +22,7 @@ IMAGES = {
     'img/hall-3.jpg': (1100, 72),
     'img/coach-igor.jpg': (760, 74),
     'img/coach-alexander.jpg': (760, 74),
+    'img/coach-bicenko.jpg': (760, 74),
 }
 
 
