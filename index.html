@@ -1,0 +1,1279 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Теннис Класс — школа тенниса в Москве</title>
+<meta name="description" content="«Теннис Класс» — школа тенниса в Москве. Тренеры-мастера спорта, обучение детей с 4 лет и взрослых любого уровня, подготовка юниоров, спарринг, индивидуальные занятия.">
+<meta property="og:title" content="Теннис Класс — школа тенниса в Москве">
+<meta property="og:description" content="Тренеры-мастера спорта. Дети с 4 лет и взрослые любого уровня.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14' fill='%23d9f24f' stroke='%231d2f22' stroke-width='2'/%3E%3Cpath d='M6 7 Q16 16 6 25 M26 7 Q16 16 26 25' fill='none' stroke='%231d2f22' stroke-width='2'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;500;600;700;900&family=Golos+Text:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script>document.documentElement.classList.add('js')</script>
+<style>
+/* ============================================================
+   ТЕННИС КЛАСС — дизайн-система
+   Палитра: грунт-терракота / крем / тёмная зелень / лаймовый мяч
+   Шрифты: Unbounded (дисплей) + Golos Text (текст)
+   ============================================================ */
+:root{
+  --clay:#c05a2e;        /* терракота (грунт) — акцент, крупные заливки */
+  --clay-deep:#9a4420;   /* тёмная терракота — фон контактов, мелкий акцентный текст на креме (AA) */
+  --cream:#f5ecdc;       /* основной фон */
+  --cream-soft:#efe3cd;  /* второй фон */
+  --ink:#1d2f22;         /* тёмная зелень — текст и тёмные секции */
+  --ball:#d9f24f;        /* лаймовый мяч — точечный акцент (только на тёмном или как заливка объекта) */
+  --line:rgba(29,47,34,.16);
+  --white-line:rgba(245,236,220,.32);
+  --radius:22px;
+  --radius-s:14px;
+  --ease:cubic-bezier(.2,.7,.2,1);
+  --shadow-step:0 14px 0 -6px var(--clay);
+  --header-h:72px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:"Golos Text",sans-serif;
+  background:var(--cream);
+  color:var(--ink);
+  line-height:1.6;
+  overflow-x:clip;
+}
+/* фирменная зернистость поверх всего */
+body::after{
+  content:"";
+  position:fixed;inset:0;
+  pointer-events:none;z-index:9999;
+  opacity:.05;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+h1,h2,h3,.display{font-family:"Unbounded",sans-serif;line-height:1.12}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+ul{list-style:none}
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+.visually-hidden{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+
+/* фокус — видимый и фирменный: терракота на светлом, лайм на тёмном */
+:focus-visible{outline:3px solid var(--clay-deep);outline-offset:3px;border-radius:4px}
+.on-dark :focus-visible, .theme-dark :focus-visible{outline-color:var(--ball)}
+
+/* ---------- кнопки ---------- */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:10px;
+  font-family:"Unbounded",sans-serif;font-weight:600;font-size:14px;
+  min-height:48px;padding:13px 26px;border-radius:100px;
+  background:var(--ink);color:var(--cream);
+  border:2px solid var(--ink);
+  transition:transform .25s var(--ease), background .25s, color .25s, box-shadow .25s;
+  cursor:pointer;white-space:nowrap;
+}
+.btn:hover{background:var(--ball);color:var(--ink);transform:translateY(-2px)}
+.btn.small{min-height:44px;padding:10px 20px;font-size:12.5px}
+.btn.ghost{background:transparent;color:var(--ink)}
+.btn.ghost:hover{background:var(--ink);color:var(--cream)}
+.btn.on-clay{background:var(--cream);color:var(--ink);border-color:var(--cream)}
+.btn.on-clay:hover{background:var(--ball);border-color:var(--ball);color:var(--ink)}
+.btn.outline-cream{background:transparent;color:var(--cream);border-color:var(--cream)}
+.btn.outline-cream:hover{background:var(--cream);color:var(--ink)}
+
+/* ============================================================
+   ХЕДЕР — липкий, «умный» (прячется вниз / появляется вверх),
+   мобильное меню на чекбоксе → работает и без JS
+   ============================================================ */
+header{
+  position:sticky;top:0;z-index:100;
+  background:rgba(245,236,220,.92);
+  background:color-mix(in srgb, var(--cream) 92%, transparent);
+  -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line);
+  transition:transform .35s var(--ease);
+}
+.js header.hide{transform:translateY(-100%)}
+.nav{display:flex;align-items:center;justify-content:space-between;height:var(--header-h);gap:16px}
+.logo{font-family:"Unbounded",sans-serif;font-weight:700;font-size:17px;letter-spacing:.02em;display:flex;align-items:center;gap:10px;flex:none}
+.logo .dot{width:15px;height:15px;border-radius:50%;background:var(--ball);border:2px solid var(--ink);flex:none;position:relative}
+.logo .dot::after{content:"";position:absolute;inset:1px;border-radius:50%;border-top:1.5px solid var(--ink);transform:rotate(-30deg)}
+.nav-links{display:flex;gap:4px;font-weight:500;font-size:15px}
+.nav-links a{
+  position:relative;padding:10px 11px;border-radius:100px;
+  display:inline-flex;align-items:center;gap:7px;
+  transition:color .2s;
+}
+/* мяч-маркер активного пункта (scroll-spy) */
+.nav-links a::before{
+  content:"";width:7px;height:7px;border-radius:50%;flex:none;
+  background:var(--ball);border:1.5px solid var(--ink);
+  transform:scale(0);transition:transform .3s var(--ease);
+}
+.nav-links a::after{
+  content:"";position:absolute;left:14px;right:14px;bottom:4px;height:2px;
+  background:var(--clay);transform:scaleX(0);transform-origin:left;
+  transition:transform .25s var(--ease);
+}
+.nav-links a:hover::after{transform:scaleX(1)}
+.nav-links a.active{font-weight:600}
+.nav-links a.active::before{transform:scale(1)}
+.nav-links a.active::after{transform:scaleX(1)}
+
+/* бургер: чекбокс скрыт визуально, но фокусируем label через него */
+.nav-toggle{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
+.burger{display:none;cursor:pointer;padding:10px;margin:-10px -6px -10px 0;border-radius:12px}
+.burger span{display:block;width:24px;height:2.5px;background:var(--ink);margin:5px 0;border-radius:2px;transition:transform .3s var(--ease), opacity .2s}
+.nav-toggle:focus-visible ~ .burger{outline:3px solid var(--clay-deep);outline-offset:2px}
+
+/* ============================================================
+   ХИРО — фото корта, оркестрованная загрузка, статы-табло
+   ============================================================ */
+.hero{position:relative;padding:88px 0 0;overflow:hidden}
+.hero-court{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.hero-photo{
+  position:absolute;top:-6%;bottom:-6%;right:0;width:58%;height:112%;
+  object-fit:cover;object-position:center;
+  will-change:transform;
+}
+/* растворение фото в фон: градиент-оверлей вместо mask — работает во всех браузерах */
+.hero-fade{
+  position:absolute;top:-6%;bottom:-6%;right:0;width:58%;
+  background:linear-gradient(90deg, var(--cream) 0%, rgba(245,236,220,.86) 22%, rgba(245,236,220,0) 62%);
+}
+.eyebrow{
+  display:inline-flex;align-items:center;gap:10px;
+  font-weight:600;font-size:13px;letter-spacing:.14em;text-transform:uppercase;
+  padding:9px 18px;border:1.5px solid var(--ink);border-radius:100px;
+  margin-bottom:28px;background:var(--cream);
+}
+.eyebrow::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--clay)}
+.hero h1{
+  font-size:clamp(38px,6.4vw,84px);
+  font-weight:900;text-transform:uppercase;letter-spacing:-.01em;
+  max-width:12ch;position:relative;z-index:2;
+}
+.hero h1 .accent{color:var(--clay);display:inline-block}
+.hero h1 .outline{color:transparent;-webkit-text-stroke:2px var(--ink);paint-order:stroke}
+@supports not (-webkit-text-stroke:2px black){.hero h1 .outline{color:var(--ink)}}
+.hero-sub{
+  margin-top:28px;font-size:clamp(16px,1.6vw,19px);max-width:47ch;
+  color:#3c4c41;position:relative;z-index:2;
+}
+.hero-cta{display:flex;gap:16px;margin-top:36px;flex-wrap:wrap;position:relative;z-index:2;align-items:center}
+.hero-trust{
+  display:inline-flex;align-items:center;gap:10px;
+  font-size:14.5px;font-weight:600;color:var(--clay-deep);
+}
+.hero-trust::before{
+  content:"";width:10px;height:10px;border-radius:50%;flex:none;
+  background:var(--ball);border:1.5px solid var(--ink);
+}
+/* статы в жанре спортивного табло */
+.hero-stats{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  border:1.5px solid var(--ink);border-radius:var(--radius);
+  margin:64px 0 0;overflow:hidden;background:var(--cream);
+  position:relative;z-index:2;
+  box-shadow:0 18px 0 -8px var(--clay);
+}
+.stat{padding:30px 28px 26px;border-right:1.5px solid var(--ink);position:relative}
+.stat:last-child{border-right:none}
+.stat .scoreboard-label{
+  font-family:"Unbounded",sans-serif;font-size:10px;font-weight:600;
+  letter-spacing:.22em;text-transform:uppercase;color:var(--clay-deep);
+  display:block;margin-bottom:10px;
+}
+.stat b{font-family:"Unbounded",sans-serif;font-size:clamp(30px,4vw,52px);font-weight:700;display:block;line-height:1;font-variant-numeric:tabular-nums}
+.stat b sup{font-size:.45em;color:var(--clay-deep)}
+.stat .stat-cap{font-size:14px;font-weight:500;color:#4a584e;display:block;margin-top:8px}
+
+/* стартовая оркестровка хиро */
+.reveal-up{opacity:0;transform:translateY(28px);animation:rise .8s var(--ease) forwards}
+@keyframes rise{to{opacity:1;transform:none}}
+.d1{animation-delay:.05s}.d2{animation-delay:.16s}.d3{animation-delay:.28s}.d4{animation-delay:.4s}.d5{animation-delay:.54s}.d6{animation-delay:.68s}
+
+/* ---------- бегущая строка направлений ---------- */
+.marquee{
+  margin-top:76px;background:var(--ink);color:var(--cream);
+  padding:16px 0;overflow:hidden;white-space:nowrap;
+  transform:rotate(-1.2deg) scale(1.02);
+}
+.marquee-track{display:inline-flex;animation:scroll 32s linear infinite}
+.marquee:hover .marquee-track{animation-play-state:paused}
+.marquee span{
+  font-family:"Unbounded",sans-serif;font-size:15px;font-weight:500;
+  text-transform:uppercase;letter-spacing:.12em;padding:0 22px;
+  display:inline-flex;align-items:center;gap:44px;
+}
+.marquee span::after{content:"●";color:var(--ball);font-size:9px}
+@keyframes scroll{to{transform:translateX(-50%)}}
+
+/* ============================================================
+   СЕКЦИИ — общий каркас
+   ============================================================ */
+section{padding:100px 0}
+section[id]{scroll-margin-top:calc(var(--header-h) + 8px)}
+.sec-head{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:56px;flex-wrap:wrap}
+.sec-head h2{font-size:clamp(28px,3.6vw,46px);font-weight:700;text-transform:uppercase}
+.sec-head .num{
+  font-family:"Unbounded",sans-serif;font-weight:600;font-size:13px;
+  color:var(--clay-deep);letter-spacing:.22em;display:inline-flex;align-items:center;gap:12px;
+  margin-bottom:14px;text-transform:uppercase;
+}
+.sec-head .num::after{content:"";width:44px;height:1.5px;background:currentColor;opacity:.45}
+.sec-head p{max-width:44ch;color:#415046;font-size:16px}
+.theme-dark .sec-head .num{color:var(--ball)}
+.theme-dark .sec-head p{color:#c9c4b4}
+
+/* разделитель-«сетка» (net) между светлым и тёмным */
+.net-divider{
+  height:26px;border:none;margin:0;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='26' height='26'%3E%3Cpath d='M0 13 13 0l13 13-13 13z' fill='none' stroke='%231d2f22' stroke-opacity='.22' stroke-width='1.2'/%3E%3C/svg%3E");
+  background-size:26px 26px;
+}
+
+/* ============================================================
+   «МЫ ПРЕДЛАГАЕМ» — тёмная секция со струнным паттерном
+   ============================================================ */
+.theme-dark{background:var(--ink);color:var(--cream);position:relative}
+/* сетка струн ракетки — едва заметный фон */
+.theme-dark::before{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background-image:
+    repeating-linear-gradient(0deg, rgba(245,236,220,.045) 0 1px, transparent 1px 34px),
+    repeating-linear-gradient(90deg, rgba(245,236,220,.045) 0 1px, transparent 1px 34px);
+}
+.theme-dark > .wrap{position:relative}
+.offer-grid{display:grid;grid-template-columns:1fr 1.2fr;gap:56px;align-items:start}
+.portrait{
+  position:relative;border-radius:var(--radius);overflow:hidden;
+  aspect-ratio:4/5;background:linear-gradient(160deg,var(--clay) 0%,var(--clay-deep) 100%);
+  border:1.5px solid var(--white-line);
+}
+.portrait img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.portrait .tag{
+  position:absolute;left:18px;bottom:18px;
+  background:var(--ball);color:var(--ink);
+  font-family:"Unbounded",sans-serif;font-size:12px;font-weight:600;
+  padding:10px 16px;border-radius:100px;transform:rotate(-3deg);
+}
+.offer-text .lead{font-size:clamp(18px,1.8vw,21px);font-weight:500;line-height:1.5;color:var(--cream)}
+/* 4 преимущества с мячами-буллетами */
+.perks{margin-top:34px;display:grid;gap:0;border-top:1px solid var(--white-line)}
+.perks li{
+  display:flex;gap:16px;align-items:flex-start;
+  padding:17px 0;border-bottom:1px solid var(--white-line);font-size:16px;color:#e6ddc9;
+}
+.perks li::before{
+  content:"";flex:none;width:11px;height:11px;border-radius:50%;
+  background:var(--ball);border:1.5px solid rgba(29,47,34,.6);margin-top:7px;
+}
+.perks li b{color:var(--cream);font-weight:600}
+/* 6 направлений — интерактивные строки с теннис-иконками */
+.dirs{margin-top:64px}
+.dirs-title{
+  font-family:"Unbounded",sans-serif;font-size:13px;font-weight:600;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--ball);margin-bottom:8px;
+}
+.dirs-grid{display:grid;grid-template-columns:1fr 1fr;column-gap:48px}
+.dir{
+  display:flex;align-items:center;gap:18px;
+  padding:20px 6px;border-bottom:1px solid var(--white-line);
+  transition:background .25s, padding .25s var(--ease);
+  border-radius:12px;
+}
+.dir:hover{background:rgba(245,236,220,.05);padding-left:14px}
+.dir .ico{
+  flex:none;width:52px;height:52px;border-radius:50%;
+  border:1.5px solid var(--white-line);display:grid;place-items:center;
+  color:var(--cream);transition:background .25s, color .25s, border-color .25s, transform .25s var(--ease);
+}
+.dir:hover .ico{background:var(--ball);color:var(--ink);border-color:var(--ball);transform:rotate(-8deg)}
+.dir .ico svg{width:26px;height:26px}
+.dir-body{flex:1;min-width:0}
+.dir-body b{display:block;font-family:"Unbounded",sans-serif;font-size:15px;font-weight:600}
+.dir-body span{font-size:14px;color:#bdb8a8}
+.dir .arr{
+  flex:none;font-family:"Unbounded",sans-serif;font-size:16px;color:var(--ball);
+  transform:translateX(-6px);opacity:0;transition:transform .25s var(--ease), opacity .25s;
+}
+.dir:hover .arr{transform:none;opacity:1}
+
+/* ============================================================
+   «У НАС ТРЕНИРОВАЛИСЬ» — сетка с хедлайнером и табло-беджами
+   ============================================================ */
+.students-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.student{
+  border:1.5px solid var(--ink);border-radius:var(--radius);
+  padding:28px 26px;background:var(--cream);position:relative;
+  display:flex;flex-direction:column;gap:12px;overflow:hidden;
+  transition:transform .25s var(--ease), box-shadow .25s var(--ease);
+}
+.student:hover{transform:translateY(-6px);box-shadow:var(--shadow-step)}
+.student .rank{
+  font-family:"Unbounded",sans-serif;font-size:11px;font-weight:600;
+  letter-spacing:.06em;text-transform:uppercase;color:var(--clay-deep);
+}
+.student h3{font-size:19px;font-weight:600}
+.student p{font-size:14.5px;color:#3c4c41}
+.student .badges{display:flex;flex-wrap:wrap;gap:8px;margin-top:auto;padding-top:6px}
+.student .badges li{
+  font-size:11.5px;font-weight:600;letter-spacing:.02em;
+  padding:6px 12px;border-radius:6px;
+  border:1.2px solid var(--ink);background:var(--cream-soft);
+  font-variant-numeric:tabular-nums;
+}
+.student .badges li.now-coach{background:var(--ink);color:var(--cream);border-color:var(--ink)}
+.student .ball-decor{
+  position:absolute;right:-16px;top:-16px;width:56px;height:56px;border-radius:50%;
+  background:var(--ball);border:1.5px solid var(--ink);
+  transition:transform .35s var(--ease);
+}
+.student:hover .ball-decor{transform:scale(1.18)}
+/* хедлайнер — Хачанов */
+.student.headliner{
+  grid-column:span 2;background:var(--ink);color:var(--cream);border-color:var(--ink);
+  padding:34px 32px;
+}
+.student.headliner:hover{box-shadow:0 16px 0 -6px var(--ball)}
+.student.headliner .rank{color:var(--ball)}
+.student.headliner h3{font-size:clamp(24px,2.6vw,34px);font-weight:700;text-transform:uppercase}
+.student.headliner p{color:#d6d0bf;max-width:52ch;font-size:15.5px}
+.student.headliner .badges li{background:transparent;color:var(--cream);border-color:var(--white-line)}
+.student.headliner .badges li em{font-style:normal;color:var(--ball)}
+/* CTA-карточка, закрывающая сетку */
+.student.cta-card{
+  grid-column:span 2;flex-direction:row;align-items:center;justify-content:space-between;
+  gap:20px;background:var(--cream-soft);border-style:dashed;border-width:1.5px;
+}
+.student.cta-card:hover{transform:none;box-shadow:none;background:var(--cream)}
+.student.cta-card h3{font-size:clamp(17px,1.8vw,21px)}
+.student.cta-card p{margin-top:6px}
+
+/* ============================================================
+   ТРЕНЕРЫ — тёмная секция, карточки со слотами под реальные фото
+   ============================================================ */
+.coaches-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.coach{
+  border:1.5px solid var(--white-line);border-radius:var(--radius);
+  background:var(--cream);color:var(--ink);overflow:hidden;
+  display:flex;flex-direction:column;
+  transition:transform .25s var(--ease), box-shadow .25s var(--ease);
+}
+.coach:hover{transform:translateY(-6px);box-shadow:0 16px 0 -6px var(--ball)}
+/* СЛОТ ПОД РЕАЛЬНОЕ ФОТО: замените содержимое .coach-photo на
+   <img src="..." alt="Имя Фамилия на корте"> — стили уже готовы */
+.coach-photo{
+  position:relative;
+  /* тёмный градиент: подпись плейсхолдера держит контраст AA на всей площади */
+  background:linear-gradient(165deg,var(--clay-deep) 0%,#7f3717 100%);
+  aspect-ratio:4/3;min-height:0;display:grid;place-items:center;overflow:hidden;
+}
+.coach-photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.coach-photo .ph{
+  display:flex;flex-direction:column;align-items:center;gap:10px;color:var(--cream);
+  position:relative;z-index:1;
+}
+.coach-photo .ph svg{width:64px;height:64px;opacity:.85}
+.coach-photo .ph b{font-family:"Unbounded",sans-serif;font-size:22px;font-weight:700;letter-spacing:.04em}
+.coach-photo .ph span{font-size:11px;letter-spacing:.14em;text-transform:uppercase;opacity:.75}
+/* меловые линии разметки на плейсхолдере */
+.coach-photo::after{
+  content:"";position:absolute;inset:0;
+  background:
+    linear-gradient(rgba(245,236,220,.5) 0 0) left 22px top 0/1.5px 100% no-repeat,
+    linear-gradient(rgba(245,236,220,.5) 0 0) left 0 bottom 26px/100% 1.5px no-repeat;
+}
+.coach-body{padding:26px 26px 24px;display:flex;flex-direction:column;align-items:flex-start;flex:1}
+.coach-body h3{font-size:19px;font-weight:600;line-height:1.3}
+.coach-body .rank{
+  display:inline-block;margin-top:10px;
+  font-family:"Unbounded",sans-serif;font-size:11.5px;font-weight:600;padding:6px 14px;border-radius:100px;
+  background:var(--clay-deep);color:var(--cream);
+}
+.coach-body p{font-size:14.5px;color:#3c4c41;margin-top:14px}
+/* полный список регалий тренера */
+.coach-body .creds{
+  margin-top:16px;padding-top:16px;width:100%;
+  border-top:1.5px dashed rgba(29,47,34,.24);
+  display:flex;flex-direction:column;gap:0;
+}
+.coach-body .creds li{
+  position:relative;padding:8px 0 8px 20px;
+  font-size:14px;color:#3c4c41;line-height:1.45;
+}
+.coach-body .creds li::before{
+  content:"";position:absolute;left:0;top:14px;
+  width:8px;height:8px;border-radius:50%;background:var(--clay);
+}
+.coach-body .creds li b{color:var(--ink);font-weight:600}
+/* убираем меловой оверлей, когда в слоте настоящее фото */
+.coach-photo:has(img)::after{content:none}
+
+/* ============================================================
+   ЗАЛЫ — галерея крытого корта (Верхоянская)
+   ============================================================ */
+.halls-gallery{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.hall{
+  position:relative;margin:0;overflow:hidden;
+  border:1.5px solid var(--ink);border-radius:var(--radius);
+  background:var(--ink);aspect-ratio:3/2;
+}
+.hall-hero{grid-column:1 / -1;aspect-ratio:2/1}
+.hall img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s var(--ease)}
+.hall:hover img{transform:scale(1.045)}
+.hall-cap{
+  position:absolute;left:16px;bottom:16px;
+  display:inline-flex;align-items:center;gap:9px;
+  background:var(--cream);color:var(--ink);
+  font-family:"Unbounded",sans-serif;font-size:12.5px;font-weight:600;
+  padding:9px 15px;border-radius:100px;border:1.5px solid var(--ink);
+}
+.hall-cap svg{width:15px;height:15px;flex:none;color:var(--clay)}
+
+/* ============================================================
+   ЦЕНЫ — сравнение планов, «меловые» пунктиры, CTA на каждой
+   ============================================================ */
+.prices{background:var(--cream-soft)}
+.cards{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
+.card{
+  border:1.5px solid var(--ink);border-radius:var(--radius);
+  padding:30px 28px 26px;background:var(--cream);
+  display:flex;flex-direction:column;position:relative;
+  transition:transform .25s var(--ease), box-shadow .25s var(--ease);
+}
+.card:hover{transform:translateY(-6px);box-shadow:var(--shadow-step)}
+.card.wide{grid-column:1 / -1;padding:34px 32px 30px}
+.card.featured{background:var(--clay-deep);color:var(--cream);border-color:var(--clay-deep)}
+.card.featured:hover{box-shadow:0 14px 0 -6px var(--ink)}
+.card-top{display:flex;justify-content:space-between;gap:18px;align-items:flex-start;flex-wrap:wrap}
+.card h3{font-size:19px;font-weight:600;text-transform:uppercase;line-height:1.25}
+.card .aud{font-size:13px;font-weight:600;color:var(--clay-deep);margin-top:6px;letter-spacing:.04em;text-transform:uppercase}
+.card.featured .aud{color:var(--ball)}
+.card .price{
+  font-family:"Unbounded",sans-serif;font-size:clamp(24px,2.4vw,30px);font-weight:700;
+  line-height:1;text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums;
+}
+.card .price small{display:block;font-family:"Golos Text",sans-serif;font-size:12.5px;font-weight:500;opacity:.72;margin-top:7px}
+.card > p{font-size:15px;color:#3c4c41;margin-top:14px;max-width:52ch}
+.card.featured > p{color:#efdfd2}
+/* что входит — меловой пунктир сверху */
+.card .includes{
+  margin-top:18px;padding-top:16px;border-top:1.5px dashed rgba(29,47,34,.28);
+  display:flex;flex-wrap:wrap;gap:8px;
+}
+.card.featured .includes{border-top-color:rgba(245,236,220,.32)}
+.card .includes li{
+  font-size:12.5px;font-weight:600;padding:6px 13px;border-radius:100px;
+  border:1.2px solid currentColor;opacity:.85;
+}
+.card .cta-row{margin-top:auto;padding-top:22px}
+.card .badge{
+  position:absolute;top:-14px;left:26px;background:var(--ball);color:var(--ink);
+  font-family:"Unbounded",sans-serif;font-size:11px;font-weight:600;
+  padding:7px 15px;border-radius:100px;border:1.5px solid var(--ink);
+}
+.prices-note{
+  margin-top:28px;font-size:15px;color:#415046;
+  display:flex;align-items:center;gap:12px;flex-wrap:wrap;
+}
+.prices-note b{color:var(--ink)}
+.prices-note::before{
+  content:"";width:11px;height:11px;border-radius:50%;flex:none;
+  background:var(--ball);border:1.5px solid var(--ink);
+}
+/* прайс-строки: несколько тарифов в одной карточке */
+.card .rate-list{margin-top:20px;display:flex;flex-direction:column}
+.card .rate-list li{
+  display:flex;justify-content:space-between;align-items:baseline;gap:16px;
+  padding:14px 0;border-top:1.5px dashed rgba(29,47,34,.24);
+}
+.card .rate-list li:first-child{border-top:none;padding-top:2px}
+.card.featured .rate-list li{border-top-color:rgba(245,236,220,.3)}
+.rate-name{display:flex;flex-direction:column;gap:2px;font-size:15.5px;font-weight:600}
+.rate-name small{font-family:"Golos Text",sans-serif;font-size:12px;font-weight:500;opacity:.62}
+.rate-price{
+  font-family:"Unbounded",sans-serif;font-weight:700;font-size:clamp(18px,2vw,22px);
+  white-space:nowrap;font-variant-numeric:tabular-nums;text-align:right;
+}
+.rate-price small{font-family:"Golos Text",sans-serif;font-size:11.5px;font-weight:500;opacity:.62;margin-left:1px}
+
+/* ============================================================
+   ОТЗЫВЫ
+   ============================================================ */
+.reviews-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.review{
+  border:1.5px solid var(--ink);border-radius:var(--radius);
+  padding:30px 28px;background:var(--cream);display:flex;flex-direction:column;gap:18px;
+  transition:transform .25s var(--ease), box-shadow .25s var(--ease);
+}
+.review:hover{transform:translateY(-4px);box-shadow:0 12px 0 -6px var(--cream-soft), 0 12px 0 -4.5px var(--ink)}
+.review .quote-mark{font-family:"Unbounded",sans-serif;font-size:44px;line-height:.5;color:var(--clay);font-weight:900}
+.review blockquote{font-size:15.5px;color:#2b3b30}
+.review footer{margin-top:auto;display:flex;align-items:center;gap:12px}
+.review .avatar{
+  width:44px;height:44px;border-radius:50%;flex:none;
+  font-family:"Unbounded",sans-serif;font-size:14px;font-weight:600;
+  display:flex;align-items:center;justify-content:center;
+  background:var(--ink);color:var(--ball);
+  border:1.5px solid var(--ink);box-shadow:inset 0 0 0 2px var(--cream);
+}
+.review b{font-size:14.5px;display:block}
+.review footer span{font-size:13px;color:#5b675f}
+/* игривый счёт-чип в шапке секции */
+.score-chip{
+  font-family:"Unbounded",sans-serif;font-size:12px;font-weight:600;letter-spacing:.14em;
+  border:1.5px solid var(--ink);border-radius:100px;padding:9px 16px;
+  display:inline-flex;gap:14px;color:var(--ink);background:var(--cream-soft);
+  font-variant-numeric:tabular-nums;
+}
+.score-chip i{font-style:normal;color:var(--clay-deep)}
+
+/* ============================================================
+   КОНТАКТЫ — конверсионный узел на тёмной терракоте (AA-контраст)
+   ============================================================ */
+.contact{background:var(--clay-deep);color:var(--cream);position:relative;overflow:hidden}
+/* линии корта: центральная + боковые */
+.contact::before{
+  content:"";position:absolute;left:50%;top:0;bottom:0;width:1.5px;
+  background:rgba(245,236,220,.28);
+}
+.contact::after{
+  content:"";position:absolute;inset:24px;border:1.5px solid rgba(245,236,220,.2);
+  border-radius:var(--radius);pointer-events:none;
+}
+.contact-inner{position:relative;text-align:center;padding:12px 0;z-index:1}
+.contact h2{font-size:clamp(30px,4.6vw,58px);font-weight:800;text-transform:uppercase;max-width:20ch;margin:0 auto}
+.contact h2 em{font-style:normal;color:var(--ball)}
+.contact .contact-sub{margin:24px auto 40px;max-width:46ch;font-size:17px;color:#f2e6d8}
+.contact-actions{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+.contact-actions .btn{font-size:clamp(14px,1.6vw,17px);min-height:56px;padding:15px 30px}
+.contact .addr{margin-top:44px;font-size:15.5px;color:#f2e6d8;display:block}
+.contact .addr b{font-family:"Unbounded",sans-serif;font-weight:600;color:var(--cream)}
+.contact .map-link{
+  display:inline-flex;align-items:center;gap:9px;margin-top:12px;
+  padding:10px 4px;min-height:44px;
+  font-size:14.5px;font-weight:600;color:var(--cream);
+  border-bottom:1.5px dashed rgba(245,236,220,.5);padding-bottom:2px;
+  transition:color .2s, border-color .2s;
+}
+.contact .map-link:hover{color:var(--ball);border-color:var(--ball)}
+.contact .map-link svg{width:17px;height:17px;flex:none}
+/* три локации школы */
+.locations{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:14px;
+  margin-top:40px;text-align:left;
+}
+.locations .loc{
+  display:flex;flex-direction:column;gap:6px;
+  padding:18px 20px;border:1.5px solid rgba(245,236,220,.28);border-radius:var(--radius-s);
+  background:rgba(245,236,220,.05);
+  transition:border-color .2s, background .2s, transform .2s var(--ease);
+}
+.locations .loc:hover{border-color:var(--ball);background:rgba(245,236,220,.09);transform:translateY(-3px)}
+.locations .loc b{
+  font-family:"Unbounded",sans-serif;font-size:15px;font-weight:600;color:var(--cream);
+  display:flex;align-items:center;gap:9px;
+}
+.locations .loc b svg{width:16px;height:16px;flex:none;color:var(--ball)}
+.locations .loc span{font-size:13.5px;color:#f2e6d8;line-height:1.45}
+
+/* ============================================================
+   ФУТЕР
+   ============================================================ */
+.footer{padding:44px 0 32px;background:var(--ink);color:var(--cream)}
+.footer-grid{display:flex;justify-content:space-between;gap:32px;flex-wrap:wrap;align-items:flex-start}
+.footer .logo{font-size:15px}
+.footer-nav{display:flex;gap:8px 22px;flex-wrap:wrap;font-size:14px}
+.footer-nav a{padding:11px 2px;border-bottom:1px solid transparent;transition:color .2s, border-color .2s}
+.footer-nav a:hover{color:var(--ball);border-color:var(--ball)}
+.footer-tel{display:flex;flex-direction:column;gap:6px;font-size:14.5px}
+.footer-tel a{border-bottom:1px solid var(--white-line);align-self:flex-start;transition:color .2s;padding:8px 0}
+.footer-tel a:hover{color:var(--ball)}
+.footer-legal{
+  margin-top:34px;padding-top:20px;border-top:1px solid var(--white-line);
+  font-size:12.5px;color:#a9a494;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;
+}
+
+/* ============================================================
+   SCROLL-REVEAL — только при работающем JS (прогрессивное улучшение)
+   ============================================================ */
+.js .sr{opacity:0;transform:translateY(30px);transition:opacity .7s var(--ease), transform .7s var(--ease)}
+.js .sr.visible{opacity:1;transform:none}
+.js .sr.dl1{transition-delay:.08s}.js .sr.dl2{transition-delay:.16s}.js .sr.dl3{transition-delay:.24s}
+@media print{.js .sr{opacity:1;transform:none}}
+
+/* ============================================================
+   REDUCED MOTION — гасим всё движение
+   ============================================================ */
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important}
+  .reveal-up{opacity:1;transform:none;animation:none}
+  .js .sr{opacity:1;transform:none;transition:none}
+  .marquee-track{animation:none}
+  .hero-photo{transform:none !important}
+}
+
+/* ============================================================
+   АДАПТИВ
+   ============================================================ */
+@media (max-width:1080px){
+  .nav-links{gap:0}
+  .nav-links a{padding:10px 8px;font-size:14px}
+}
+/* меню сворачивается в бургер уже на планшете: 6 пунктов + CTA не влезают */
+@media (max-width:960px){
+  .nav-links{
+    display:none;position:absolute;top:var(--header-h);left:0;right:0;
+    flex-direction:column;background:var(--cream);
+    padding:20px 24px 26px;border-bottom:1.5px solid var(--ink);gap:4px;
+    box-shadow:0 18px 30px -18px rgba(29,47,34,.35);
+  }
+  .nav-links a{font-size:17px;padding:13px 10px;border-radius:12px}
+  .nav-links a::after{display:none}
+  .nav-toggle:checked ~ .nav-links{display:flex}
+  .burger{display:block}
+  .nav-toggle:checked ~ .burger span:nth-child(1){transform:translateY(7.5px) rotate(45deg)}
+  .nav-toggle:checked ~ .burger span:nth-child(2){opacity:0}
+  .nav-toggle:checked ~ .burger span:nth-child(3){transform:translateY(-7.5px) rotate(-45deg)}
+}
+@media (max-width:960px){
+  .offer-grid{grid-template-columns:1fr}
+  .portrait{max-width:440px}
+  .dirs-grid{grid-template-columns:1fr}
+  .students-grid{grid-template-columns:1fr 1fr}
+  .student.headliner{grid-column:span 2}
+  .student.cta-card{grid-column:span 2}
+  .reviews-grid{grid-template-columns:1fr}
+  .hero-photo,.hero-fade{width:72%}
+  .coaches-grid{gap:18px}
+}
+@media (max-width:720px){
+  section{padding:68px 0}
+  .hero{padding-top:56px}
+  .hero-photo,.hero-fade{display:none}
+  .hero h1{font-size:clamp(31px,9vw,42px)}
+  .hero-stats{grid-template-columns:1fr;box-shadow:0 14px 0 -8px var(--clay)}
+  .stat{border-right:none;border-bottom:1.5px solid var(--ink)}
+  .stat:last-child{border-bottom:none}
+  .marquee{margin-top:56px}
+
+  .students-grid{grid-template-columns:1fr}
+  .student.headliner,.student.cta-card{grid-column:auto}
+  .student.cta-card{flex-direction:column;align-items:flex-start}
+
+  .cards{grid-template-columns:1fr}
+  .card-top{flex-direction:column}
+  .card .price{text-align:left}
+
+  .coaches-grid{grid-template-columns:1fr;gap:20px}
+  .coach{max-width:440px;margin-inline:auto;width:100%}
+  /* min-height:0 обязателен: aspect-ratio+min-height дают min-width шире экрана */
+  .coach-photo{min-height:0;aspect-ratio:16/10}
+
+  .halls-gallery{grid-template-columns:1fr;gap:14px}
+  .hall-hero{aspect-ratio:3/2}
+
+  .contact::after{inset:12px}
+  .locations{grid-template-columns:1fr;margin-top:32px}
+  .contact-actions{flex-direction:column;align-items:stretch}
+  .contact-actions .btn{width:100%}
+  .footer-grid{flex-direction:column;gap:24px}
+}
+@media (max-width:480px){
+  /* CTA остаётся видимой и на телефоне — ужимаем, чтобы влезала */
+  .logo{font-size:14px}
+  .nav .btn.small{min-height:44px;padding:9px 14px;font-size:11px}
+  .nav{gap:10px}
+}
+@media (max-width:400px){
+  header .wrap{padding:0 14px}
+  .nav{gap:8px}
+  .logo{font-size:13px;gap:8px}
+  .nav .btn.small{padding:8px 11px;font-size:10.5px;min-height:44px}
+}
+@media (max-width:390px){
+  .wrap{padding:0 18px}
+  .hero h1{font-size:clamp(28px,8.8vw,34px)}
+  .card,.student,.review{padding:24px 20px}
+}
+</style>
+</head>
+<body>
+
+<header id="siteHeader">
+  <div class="wrap nav">
+    <a class="logo" href="#top"><span class="dot" aria-hidden="true"></span>ТЕННИС·КЛАСС</a>
+    <!-- чекбокс-механика: меню работает и без JS -->
+    <input type="checkbox" id="navToggle" class="nav-toggle" aria-label="Открыть меню">
+    <nav class="nav-links" id="navLinks" aria-label="Основная навигация">
+      <a href="#offer">Мы предлагаем</a>
+      <a href="#students">Ученики</a>
+      <a href="#coaches">Тренеры</a>
+      <a href="#halls">Залы</a>
+      <a href="#prices">Цены</a>
+      <a href="#reviews">Отзывы</a>
+      <a href="#contact">Контакты</a>
+    </nav>
+    <label class="burger" for="navToggle" aria-hidden="true"><span></span><span></span><span></span></label>
+    <a class="btn small" href="#contact">Записаться</a>
+  </div>
+</header>
+
+<main id="top">
+<!-- ================= ХИРО ================= -->
+<section class="hero">
+  <div class="hero-court" aria-hidden="true">
+    <img class="hero-photo" id="heroPhoto" src="img/hero.jpg" alt="" decoding="async">
+    <div class="hero-fade"></div>
+  </div>
+  <div class="wrap">
+    <span class="eyebrow reveal-up d1">Школа тенниса · Москва</span>
+    <h1>
+      <span class="reveal-up d2" style="display:block">Воспитываем</span>
+      <span class="accent reveal-up d3" style="display:block">чемпионов.</span>
+      <span class="outline reveal-up d4" style="display:block">С&nbsp;4&nbsp;лет.</span>
+    </h1>
+    <p class="hero-sub reveal-up d4">«Теннис Класс» — школа тенниса в&nbsp;Москве. Тренеры — мастера спорта с&nbsp;многолетним опытом. Мы обучили более 1200&nbsp;спортсменов — от&nbsp;четырёхлетних новичков до&nbsp;победителей турниров ITF и&nbsp;игроков топ-100 WTA.</p>
+    <div class="hero-cta reveal-up d5">
+      <a class="btn magnet" href="#contact">Записаться на занятие</a>
+      <a class="btn ghost" href="#prices">Смотреть цены</a>
+    </div>
+    <div class="hero-stats reveal-up d6">
+      <div class="stat">
+        <span class="scoreboard-label" aria-hidden="true">Set 01</span>
+        <b><span data-count="1200">1200</span><sup>+</sup></b>
+        <span class="stat-cap">обученных спортсменов</span>
+      </div>
+      <div class="stat">
+        <span class="scoreboard-label" aria-hidden="true">Set 02</span>
+        <b>МС<sup>·КМС</sup></b>
+        <span class="stat-cap">мастера спорта и&nbsp;кандидаты</span>
+      </div>
+      <div class="stat">
+        <span class="scoreboard-label" aria-hidden="true">Set 03</span>
+        <b>с&nbsp;4<sup>лет</sup></b>
+        <span class="stat-cap">дети и&nbsp;взрослые любого уровня</span>
+      </div>
+    </div>
+  </div>
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee-track">
+      <span>Обучение детей</span><span>Обучение взрослых</span><span>Групповые занятия</span><span>Подготовка юниоров</span><span>Спарринг-партнёр</span><span>Индивидуальные</span><span>Обучение детей</span><span>Обучение взрослых</span><span>Групповые занятия</span><span>Подготовка юниоров</span><span>Спарринг-партнёр</span><span>Индивидуальные</span>
+    </div>
+  </div>
+</section>
+
+<!-- ================= МЫ ПРЕДЛАГАЕМ ================= -->
+<section class="theme-dark on-dark" id="offer">
+  <div class="wrap">
+    <div class="sec-head sr">
+      <div>
+        <span class="num">01 · Почему мы</span>
+        <h2>Мы предлагаем</h2>
+      </div>
+      <p>Школа, где воспитывают чемпионов, — и&nbsp;где комфортно даже тем, кто впервые взял ракетку.</p>
+    </div>
+    <div class="offer-grid">
+      <div class="portrait sr dl1">
+        <img src="img/offer.jpg" alt="Ребёнок отрабатывает удар справа на грунтовом корте" loading="lazy" decoding="async">
+        <span class="tag">Теннис Класс</span>
+      </div>
+      <div class="offer-text sr dl2">
+        <p class="lead">Работаем честно и&nbsp;вдолгую: ставим технику, растим спортсменов и&nbsp;бережём любовь к&nbsp;игре.</p>
+        <ul class="perks">
+          <li><span><b>Тренеры — мастера спорта</b> с&nbsp;многолетним опытом работы</span></li>
+          <li><span><b>Обучили более 1200&nbsp;спортсменов</b> — от&nbsp;новичков до&nbsp;турнирных игроков</span></li>
+          <li><span><b>Не&nbsp;завышаем цены</b> и&nbsp;не&nbsp;навязываем лишних услуг</span></li>
+          <li><span><b>Находим подход к&nbsp;каждому</b> — даже к&nbsp;самым маленьким</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="dirs sr">
+      <p class="dirs-title">Направления</p>
+      <div class="dirs-grid">
+        <a class="dir" href="#prices">
+          <span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="13.5" r="4.2"/><path d="M4 5c2.5 2.8 3.5 4.5 4.6 6.8M20 5c-2.5 2.8-3.5 4.5-4.6 6.8" stroke-dasharray="2.4 2.6"/></svg></span>
+          <span class="dir-body"><b>Обучение детей</b><span>с&nbsp;4&nbsp;лет, в&nbsp;игровом формате</span></span>
+          <span class="arr" aria-hidden="true">→</span>
+        </a>
+        <a class="dir" href="#prices">
+          <span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="7" r="3.2"/><path d="M5.5 20c.8-4 3.2-6.2 6.5-6.2s5.7 2.2 6.5 6.2"/></svg></span>
+          <span class="dir-body"><b>Обучение взрослых</b><span>любой уровень — форма и&nbsp;результат</span></span>
+          <span class="arr" aria-hidden="true">→</span>
+        </a>
+        <a class="dir" href="#prices">
+          <span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="8.5" cy="8" r="2.8"/><circle cx="16.5" cy="9.5" r="2.3"/><path d="M3.5 19.5c.6-3.4 2.5-5.3 5-5.3 2 0 3.5 1.1 4.3 3M12.6 19.5c.5-2.6 2-4 3.9-4s3.3 1.4 3.9 4"/></svg></span>
+          <span class="dir-body"><b>Групповые занятия</b><span>детские и&nbsp;юниорские группы</span></span>
+          <span class="arr" aria-hidden="true">→</span>
+        </a>
+        <a class="dir" href="#prices">
+          <span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4h8v3.5a4 4 0 0 1-8 0zM8 5.5H5.2c0 2.6 1 4.1 2.8 4.6M16 5.5h2.8c0 2.6-1 4.1-2.8 4.6M12 11.5v3M9 20c.3-2 1.4-3 3-3s2.7 1 3 3z"/></svg></span>
+          <span class="dir-body"><b>Подготовка юниоров</b><span>спортивная и&nbsp;турнирная</span></span>
+          <span class="arr" aria-hidden="true">→</span>
+        </a>
+        <a class="dir" href="#prices">
+          <span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><ellipse cx="12" cy="8.6" rx="5.6" ry="6.4"/><path d="M8.5 4.5v8.2M12 3v11M15.5 4.5v8.2M6.6 6.5h10.8M6.2 9h11.6M6.9 11.5h10.2M12 15v6"/></svg></span>
+          <span class="dir-body"><b>Индивидуальные занятия</b><span>персонально с&nbsp;тренером</span></span>
+          <span class="arr" aria-hidden="true">→</span>
+        </a>
+        <a class="dir" href="#contact">
+          <span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M12 3.5v17M3.5 12h17"/><path d="M12 3.5c2.8 2.3 2.8 14.7 0 17M12 3.5c-2.8 2.3-2.8 14.7 0 17" stroke-width="1.4"/><circle cx="12" cy="12" r="8.5"/></svg></span>
+          <span class="dir-body"><b>Спарринг-партнёр</b><span>игровая практика на&nbsp;счёт</span></span>
+          <span class="arr" aria-hidden="true">→</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+<div class="net-divider" aria-hidden="true"></div>
+
+<!-- ================= У НАС ТРЕНИРОВАЛИСЬ ================= -->
+<section id="students">
+  <div class="wrap">
+    <div class="sec-head sr">
+      <div>
+        <span class="num">02 · Ученики</span>
+        <h2>У нас тренировались</h2>
+      </div>
+      <p>От&nbsp;юниорских титулов до&nbsp;топ-100 мирового рейтинга — имена, которыми мы гордимся.</p>
+    </div>
+    <div class="students-grid">
+      <article class="student headliner sr dl1">
+        <span class="rank">Хедлайнер · Мировой тур ATP</span>
+        <h3>Карен Хачанов</h3>
+        <p>Чемпион Европы до&nbsp;18&nbsp;лет (2013). Сегодня — топ-игрок мирового тура: титул на&nbsp;«Мастерсе» в&nbsp;Париже, олимпийское серебро и&nbsp;победа в&nbsp;Кубке Дэвиса в&nbsp;составе сборной.</p>
+        <ul class="badges" aria-label="Достижения">
+          <li><em>2013</em>&nbsp;· Чемпион Европы U18</li>
+          <li><em>2018</em>&nbsp;· Париж-Мастерс</li>
+          <li>Серебро Олимпиады</li>
+          <li>Кубок Дэвиса</li>
+        </ul>
+      </article>
+      <article class="student sr dl2">
+        <span class="ball-decor" aria-hidden="true"></span>
+        <span class="rank">№67 WTA</span>
+        <h3>Евгения Родина</h3>
+        <p>Чемпионка юниорского Australian Open в&nbsp;паре (2007), 4-й круг Уимблдона-2018. Высший рейтинг — №67 WTA (2019).</p>
+        <ul class="badges" aria-label="Достижения">
+          <li>AO-2007 · юниоры</li>
+          <li>Уимблдон-2018</li>
+        </ul>
+      </article>
+      <article class="student sr dl1">
+        <span class="ball-decor" aria-hidden="true"></span>
+        <span class="rank">№65 WTA</span>
+        <h3>Регина Куликова</h3>
+        <p>Победительница 15&nbsp;турниров ITF, 13&nbsp;из&nbsp;них — в&nbsp;одиночном разряде. Высший рейтинг — №65 WTA (2010).</p>
+        <ul class="badges" aria-label="Достижения">
+          <li>15 титулов ITF</li>
+        </ul>
+      </article>
+      <article class="student sr dl2">
+        <span class="ball-decor" aria-hidden="true"></span>
+        <span class="rank">№1 Европы U14</span>
+        <h3>Евгения Левашова</h3>
+        <p>Первая ракетка Европы до&nbsp;14&nbsp;лет по&nbsp;итогам 2013&nbsp;года.</p>
+        <ul class="badges" aria-label="Достижения">
+          <li>Tennis Europe U14</li>
+        </ul>
+      </article>
+      <article class="student sr dl3">
+        <span class="ball-decor" aria-hidden="true"></span>
+        <span class="rank">Экс-№1 Европы U18</span>
+        <h3>Николай Вылегжанин</h3>
+        <p>Экс-первая ракетка Европы до&nbsp;18&nbsp;лет, победитель юниорского Кубка Кремля. Сегодня передаёт опыт как тренер.</p>
+        <ul class="badges" aria-label="Достижения">
+          <li>Кубок Кремля · юниоры</li>
+          <li class="now-coach">Сейчас — тренер</li>
+        </ul>
+      </article>
+      <article class="student sr dl1">
+        <span class="ball-decor" aria-hidden="true"></span>
+        <span class="rank">№1 России U14</span>
+        <h3>Владимир Зиняков</h3>
+        <p>Сильный юниор своего поколения: №1 России до&nbsp;14&nbsp;лет, №5 рейтинга Tennis Europe. Сегодня — тренер.</p>
+        <ul class="badges" aria-label="Достижения">
+          <li>Tennis Europe · №5</li>
+          <li class="now-coach">Сейчас — тренер</li>
+        </ul>
+      </article>
+      <article class="student cta-card sr dl2">
+        <div>
+          <h3>Следующее имя здесь может быть вашим</h3>
+          <p>Приходите на&nbsp;первое занятие — познакомимся и&nbsp;подберём группу.</p>
+        </div>
+        <a class="btn" href="#contact">Записаться</a>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ================= ТРЕНЕРЫ ================= -->
+<div class="net-divider" aria-hidden="true"></div>
+<section class="theme-dark on-dark" id="coaches">
+  <div class="wrap">
+    <div class="sec-head sr">
+      <div>
+        <span class="num">03 · Тренеры</span>
+        <h2>Наши тренеры</h2>
+      </div>
+      <p>Ставят технику с&nbsp;нуля, готовят к&nbsp;турнирам и&nbsp;умеют увлечь игрой — от&nbsp;первых шагов до&nbsp;спортивных результатов.</p>
+    </div>
+    <div class="coaches-grid">
+      <article class="coach sr dl1">
+        <div class="coach-photo">
+          <img src="img/coach-alexander.jpg" alt="Александр Евгеньевич Шкрыль с ракеткой на корте" style="object-position:center 8%" loading="lazy" decoding="async">
+        </div>
+        <div class="coach-body">
+          <h3>Шкрыль Александр Евгеньевич</h3>
+          <span class="rank">Мастер спорта СССР</span>
+          <ul class="creds" aria-label="Регалии тренера">
+            <li>Тренер высшей категории</li>
+            <li>Сертификация ФТР — <b>Гранд</b></li>
+            <li>Стаж работы — <b>44&nbsp;года</b></li>
+            <li>Высшее педагогическое образование</li>
+          </ul>
+        </div>
+      </article>
+      <article class="coach sr dl2">
+        <div class="coach-photo">
+          <img src="img/coach-igor.jpg" alt="Игорь Александрович Шкрыль с ракеткой на корте" style="object-position:center 16%" loading="lazy" decoding="async">
+        </div>
+        <div class="coach-body">
+          <h3>Шкрыль Игорь Александрович</h3>
+          <span class="rank">Кандидат в&nbsp;мастера спорта</span>
+          <ul class="creds" aria-label="Регалии тренера">
+            <li>Тренер высшей категории</li>
+            <li>Сертификация ФТР — <b>Мастер+</b></li>
+            <li>Стаж работы — <b>22&nbsp;года</b></li>
+            <li>Высшее педагогическое образование</li>
+          </ul>
+        </div>
+      </article>
+      <article class="coach sr dl3">
+        <!-- ========== СЛОТ ПОД РЕАЛЬНОЕ ФОТО ==========
+             Замените блок .ph на:
+             <img src="data:image/jpeg;base64,..." alt="Игорь Валентинович Биценко на корте">
+             Рекомендуемый кадр: поясной портрет на корте, 1:1 или 4:5. -->
+        <div class="coach-photo" role="img" aria-label="Место для фотографии Игоря Валентиновича Биценко">
+          <div class="ph">
+            <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="32" cy="22" r="10"/><path d="M12 56c2-12 9.5-18 20-18s18 6 20 18" stroke-linecap="round"/></svg>
+            <b>ИБ</b>
+            <span>Фото скоро</span>
+          </div>
+        </div>
+        <div class="coach-body">
+          <h3>Биценко Игорь Валентинович</h3>
+          <span class="rank">Заслуженный тренер РФ</span>
+          <ul class="creds" aria-label="Регалии тренера">
+            <li>Кандидат в&nbsp;мастера спорта СССР</li>
+            <li>Сертификация ФТР — <b>Гранд</b></li>
+            <li>Стаж работы — <b>48&nbsp;лет</b></li>
+            <li>Высшее педагогическое образование</li>
+          </ul>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+<div class="net-divider" aria-hidden="true"></div>
+
+<!-- ================= ЗАЛЫ ================= -->
+<section id="halls">
+  <div class="wrap">
+    <div class="sec-head sr">
+      <div>
+        <span class="num">04 · Залы</span>
+        <h2>Где мы играем</h2>
+      </div>
+      <p>Крытый теннисный зал на&nbsp;Верхоянской — играем круглый год в&nbsp;тепле, при профессиональном свете и&nbsp;разметке.</p>
+    </div>
+    <div class="halls-gallery">
+      <figure class="hall hall-hero sr dl1">
+        <img src="img/hall-1.jpg" alt="Крытый теннисный корт на Верхоянской — вид от задней линии" loading="lazy" decoding="async">
+        <figcaption class="hall-cap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><path d="M12 21s-6.5-5.5-6.5-10a6.5 6.5 0 0 1 13 0c0 4.5-6.5 10-6.5 10z"/><circle cx="12" cy="10.7" r="2.3"/></svg>
+          Верхоянская, 9 · м.&nbsp;Свиблово
+        </figcaption>
+      </figure>
+      <figure class="hall sr dl2">
+        <img src="img/hall-2.jpg" alt="Теннисный корт с высоким потолком и профессиональным освещением" loading="lazy" decoding="async">
+      </figure>
+      <figure class="hall sr dl3">
+        <img src="img/hall-3.jpg" alt="Теннисный корт: судейская вышка и разметка на грунтовом покрытии" loading="lazy" decoding="async">
+      </figure>
+    </div>
+  </div>
+</section>
+<div class="net-divider" aria-hidden="true"></div>
+
+<!-- ================= ЦЕНЫ ================= -->
+<section class="prices" id="prices">
+  <div class="wrap">
+    <div class="sec-head sr">
+      <div>
+        <span class="num">05 · Цены</span>
+        <h2>Наши цены</h2>
+      </div>
+      <p>Прозрачно и&nbsp;без наценок. Групповые — абонементом на&nbsp;месяц или разово, индивидуальные и&nbsp;аренда корта — почасово.</p>
+    </div>
+    <div class="cards">
+      <article class="card featured sr dl1">
+        <span class="badge">Индивидуально</span>
+        <div class="card-top">
+          <div>
+            <h3>Индивидуальные занятия</h3>
+            <p class="aud">Для детей и взрослых · любой уровень</p>
+          </div>
+        </div>
+        <ul class="rate-list" aria-label="Индивидуальные занятия">
+          <li><span class="rate-name">Индивидуальное занятие<small>1 час</small></span><span class="rate-price">6&nbsp;000&nbsp;₽</span></li>
+          <li><span class="rate-name">Сплит-тренировка<small>1 час, двое у&nbsp;одного тренера</small></span><span class="rate-price">7&nbsp;000&nbsp;₽</span></li>
+        </ul>
+        <p>Персональная работа с&nbsp;тренером один на&nbsp;один или сплит на&nbsp;двоих — техника, тактика и&nbsp;игра под ваш уровень и&nbsp;цель. Цены одинаковы для детей и&nbsp;взрослых.</p>
+        <div class="cta-row"><a class="btn on-clay" href="#contact">Записаться</a></div>
+      </article>
+      <article class="card sr dl1">
+        <div class="card-top">
+          <div>
+            <h3>Детские группы</h3>
+            <p class="aud">Групповые занятия · дети</p>
+          </div>
+        </div>
+        <ul class="rate-list" aria-label="Детские группы">
+          <li><span class="rate-name">Разовое занятие<small>1 час</small></span><span class="rate-price">2&nbsp;500&nbsp;₽</span></li>
+          <li><span class="rate-name">1 раз в неделю<small>абонемент на месяц</small></span><span class="rate-price">9&nbsp;000&nbsp;₽<small>/мес</small></span></li>
+          <li><span class="rate-name">2 раза в неделю<small>абонемент на месяц</small></span><span class="rate-price">15&nbsp;000&nbsp;₽<small>/мес</small></span></li>
+          <li><span class="rate-name">3 раза в неделю<small>абонемент на месяц</small></span><span class="rate-price">21&nbsp;000&nbsp;₽<small>/мес</small></span></li>
+        </ul>
+        <div class="cta-row"><a class="btn ghost small" href="#contact">Записаться</a></div>
+      </article>
+      <article class="card sr dl2">
+        <div class="card-top">
+          <div>
+            <h3>Взрослые группы</h3>
+            <p class="aud">Групповые занятия · взрослые</p>
+          </div>
+        </div>
+        <ul class="rate-list" aria-label="Взрослые группы">
+          <li><span class="rate-name">Разовое занятие<small>1 час</small></span><span class="rate-price">3&nbsp;000&nbsp;₽</span></li>
+          <li><span class="rate-name">2 раза в неделю<small>абонемент на месяц</small></span><span class="rate-price">17&nbsp;000&nbsp;₽<small>/мес</small></span></li>
+          <li><span class="rate-name">3 раза в неделю<small>абонемент на месяц</small></span><span class="rate-price">24&nbsp;000&nbsp;₽<small>/мес</small></span></li>
+        </ul>
+        <div class="cta-row"><a class="btn ghost small" href="#contact">Записаться</a></div>
+      </article>
+      <article class="card sr dl1">
+        <div class="card-top">
+          <div>
+            <h3>Аренда корта</h3>
+            <p class="aud">Будние дни</p>
+          </div>
+        </div>
+        <ul class="rate-list" aria-label="Аренда корта в будни">
+          <li><span class="rate-name">07:00–17:00<small>1 час</small></span><span class="rate-price">3&nbsp;500&nbsp;₽</span></li>
+          <li><span class="rate-name">17:00–22:00<small>1 час</small></span><span class="rate-price">4&nbsp;500&nbsp;₽</span></li>
+        </ul>
+        <div class="cta-row"><a class="btn ghost small" href="#contact">Забронировать</a></div>
+      </article>
+    </div>
+    <p class="prices-note sr"><span><b>Оставьте заявку</b> — подберём группу и&nbsp;удобное время.</span></p>
+  </div>
+</section>
+
+<!-- ================= ОТЗЫВЫ ================= -->
+<section id="reviews">
+  <div class="wrap">
+    <div class="sec-head sr">
+      <div>
+        <span class="num">06 · Отзывы</span>
+        <h2>Отзывы о нас</h2>
+      </div>
+      <span class="score-chip" aria-hidden="true"><i>GAME</i> · <i>SET</i> · МАТЧ</span>
+    </div>
+    <div class="reviews-grid">
+      <article class="review sr dl1">
+        <span class="quote-mark" aria-hidden="true">“</span>
+        <blockquote>Отдала на&nbsp;занятия дочку 8&nbsp;лет, ребёнку очень нравится — после занятий выходит довольная и&nbsp;всю дорогу рассказывает про тренировку. Тренер добрый, подсказывает каждому ребёнку, ни&nbsp;разу не&nbsp;кричал. Мне главное, что ребёнок доволен.</blockquote>
+        <footer><span class="avatar" aria-hidden="true">ЕС</span><div><b>Екатерина Смыслова</b><span>мама ученицы</span></div></footer>
+      </article>
+      <article class="review sr dl2">
+        <span class="quote-mark" aria-hidden="true">“</span>
+        <blockquote>Сыну 10&nbsp;лет, перевели из&nbsp;другой школы, где занимался 3&nbsp;года. Записались в&nbsp;юниорскую продвинутую группу — уровень тренировок совсем другой, нагрузки выше. Это заметил и&nbsp;сын: появился спортивный азарт, постоянно хочет улучшать результаты.</blockquote>
+        <footer><span class="avatar" aria-hidden="true">АФ</span><div><b>Андрей Фокин</b><span>папа ученика</span></div></footer>
+      </article>
+      <article class="review sr dl3">
+        <span class="quote-mark" aria-hidden="true">“</span>
+        <blockquote>В&nbsp;моём возрасте новому виду спорта уже не&nbsp;учатся, но&nbsp;для здоровья решил попробовать теннис — записался на&nbsp;2&nbsp;занятия. Огромное спасибо тренеру! За&nbsp;эти 3&nbsp;часа я&nbsp;понял, что теннис станет моим хобби очень надолго.</blockquote>
+        <footer><span class="avatar" aria-hidden="true">ГН</span><div><b>Григорий Никитин</b><span>занимается для себя</span></div></footer>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ================= КОНТАКТЫ ================= -->
+<section class="contact on-dark" id="contact">
+  <div class="wrap contact-inner sr">
+    <h2>Запишитесь на <em>первое занятие</em></h2>
+    <p class="contact-sub">Позвоните — поможем записаться, подберём группу и&nbsp;удобное время.</p>
+    <div class="contact-actions">
+      <a class="btn on-clay magnet" href="tel:+79161359160">+7&nbsp;(916)&nbsp;135-91-60</a>
+      <a class="btn outline-cream magnet" href="tel:+79150222200">+7&nbsp;(915)&nbsp;022-22-00</a>
+    </div>
+    <span class="addr"><b>Москва</b> · ул.&nbsp;Верхоянская,&nbsp;9 · м.&nbsp;Свиблово</span>
+    <a class="map-link" href="https://yandex.ru/maps/?text=Москва,%20Верхоянская%209" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M12 21s-6.5-5.5-6.5-10a6.5 6.5 0 0 1 13 0c0 4.5-6.5 10-6.5 10z"/><circle cx="12" cy="10.7" r="2.3"/></svg>
+      Открыть схему проезда в&nbsp;Яндекс&nbsp;Картах
+    </a>
+  </div>
+</section>
+</main>
+
+<!-- ================= ФУТЕР ================= -->
+<footer class="footer on-dark">
+  <div class="wrap">
+    <div class="footer-grid">
+      <a class="logo" href="#top"><span class="dot" aria-hidden="true"></span>ТЕННИС·КЛАСС</a>
+      <nav class="footer-nav" aria-label="Навигация в подвале">
+        <a href="#offer">Мы предлагаем</a>
+        <a href="#students">Ученики</a>
+        <a href="#coaches">Тренеры</a>
+        <a href="#halls">Залы</a>
+        <a href="#prices">Цены</a>
+        <a href="#reviews">Отзывы</a>
+        <a href="#contact">Контакты</a>
+      </nav>
+      <div class="footer-tel">
+        <a href="tel:+79161359160">+7&nbsp;(916)&nbsp;135-91-60</a>
+        <a href="tel:+79150222200">+7&nbsp;(915)&nbsp;022-22-00</a>
+      </div>
+    </div>
+    <div class="footer-legal">
+      <span>© 2026 «Теннис Класс» — школа тенниса в&nbsp;Москве</span>
+      <span>Москва · ул.&nbsp;Верхоянская,&nbsp;9 · м.&nbsp;Свиблово</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ============================================================
+   Прогрессивные улучшения. Без JS работает всё базовое:
+   меню (чекбокс), контент, навигация, якоря.
+   ============================================================ */
+(function(){
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* --- мобильное меню: доводим чекбокс до полноценного виджета --- */
+  var toggle = document.getElementById('navToggle');
+  var navLinks = document.getElementById('navLinks');
+  if (toggle && navLinks) {
+    toggle.setAttribute('role','button');
+    toggle.setAttribute('aria-controls','navLinks');
+    toggle.setAttribute('aria-expanded','false');
+    toggle.addEventListener('change', function(){
+      toggle.setAttribute('aria-expanded', String(toggle.checked));
+    });
+    /* Enter тоже открывает (у чекбокса нативно только Space) */
+    toggle.addEventListener('keydown', function(e){
+      if (e.key === 'Enter') { toggle.checked = !toggle.checked; toggle.dispatchEvent(new Event('change')); }
+    });
+    navLinks.querySelectorAll('a').forEach(function(a){
+      a.addEventListener('click', function(){
+        toggle.checked = false;
+        toggle.setAttribute('aria-expanded','false');
+      });
+    });
+    /* Esc закрывает меню */
+    document.addEventListener('keydown', function(e){
+      if (e.key === 'Escape' && toggle.checked) {
+        toggle.checked = false;
+        toggle.setAttribute('aria-expanded','false');
+      }
+    });
+  }
+
+  /* --- «умный» хедер: прячется при скролле вниз, появляется вверх --- */
+  var header = document.getElementById('siteHeader');
+  var heroPhoto = document.getElementById('heroPhoto');
+  var lastY = window.scrollY;
+  var ticking = false;
+  function onScroll(){
+    var y = window.scrollY;
+    if (!toggle || !toggle.checked) {
+      if (y > 340 && y > lastY + 4) header.classList.add('hide');
+      else if (y < lastY - 4 || y < 340) header.classList.remove('hide');
+    }
+    lastY = y;
+    /* --- деликатный параллакс фото корта --- */
+    if (!reduceMotion && heroPhoto && y < window.innerHeight * 1.2) {
+      heroPhoto.style.transform = 'translateY(' + (y * 0.1).toFixed(1) + 'px)';
+    }
+    ticking = false;
+  }
+  window.addEventListener('scroll', function(){
+    if (!ticking) { requestAnimationFrame(onScroll); ticking = true; }
+  }, {passive:true});
+
+  /* --- появление секций при скролле --- */
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
+      });
+    }, {threshold:.12, rootMargin:'0px 0px -4% 0px'});
+    document.querySelectorAll('.sr').forEach(function(el){ io.observe(el); });
+  } else {
+    document.querySelectorAll('.sr').forEach(function(el){ el.classList.add('visible'); });
+  }
+
+  /* --- scroll-spy: мяч-маркер у активного пункта меню --- */
+  var links = Array.prototype.slice.call(document.querySelectorAll('.nav-links a[href^="#"]'));
+  var sections = links.map(function(a){ return document.querySelector(a.getAttribute('href')); }).filter(Boolean);
+  if ('IntersectionObserver' in window && sections.length) {
+    var spy = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if (e.isIntersecting) {
+          links.forEach(function(a){ a.classList.toggle('active', a.getAttribute('href') === '#' + e.target.id); });
+        }
+      });
+    }, {rootMargin:'-40% 0px -52% 0px'});
+    sections.forEach(function(s){ spy.observe(s); });
+  }
+
+  /* --- count-up для «1200+» --- */
+  var cnt = document.querySelector('[data-count]');
+  if (cnt && !reduceMotion && 'IntersectionObserver' in window) {
+    var target = parseInt(cnt.getAttribute('data-count'), 10);
+    var cio = new IntersectionObserver(function(entries){
+      if (!entries[0].isIntersecting) return;
+      cio.disconnect();
+      var t0 = null;
+      function step(ts){
+        if (!t0) t0 = ts;
+        var p = Math.min((ts - t0) / 1400, 1);
+        var eased = 1 - Math.pow(1 - p, 3);
+        cnt.textContent = Math.round(target * eased);
+        if (p < 1) requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    }, {threshold:.6});
+    cio.observe(cnt);
+  }
+
+  /* --- лёгкий «магнит» на главных кнопках (только точный указатель) --- */
+  if (!reduceMotion && window.matchMedia('(pointer: fine)').matches) {
+    document.querySelectorAll('.magnet').forEach(function(btn){
+      btn.addEventListener('mousemove', function(e){
+        var r = btn.getBoundingClientRect();
+        var dx = (e.clientX - r.left - r.width / 2) / r.width;
+        var dy = (e.clientY - r.top - r.height / 2) / r.height;
+        btn.style.transform = 'translate(' + (dx * 6).toFixed(1) + 'px,' + (dy * 5 - 2).toFixed(1) + 'px)';
+      });
+      btn.addEventListener('mouseleave', function(){ btn.style.transform = ''; });
+    });
+  }
+})();
+</script>
+</body>
+</html>
