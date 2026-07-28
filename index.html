@@ -669,7 +669,8 @@ section[id]{scroll-margin-top:calc(var(--header-h) + 8px)}
   section{padding:68px 0}
   .hero{padding-top:56px}
   .hero-photo,.hero-fade{display:none}
-  .hero h1{font-size:clamp(25px,7.2vw,42px)}
+  .hero h1{font-size:clamp(25px,7.2vw,42px);line-height:1.26}
+  .hero h1 .outline{margin-top:.16em;-webkit-text-stroke-width:1.4px}
   .hero-stats{grid-template-columns:1fr;box-shadow:0 14px 0 -8px var(--clay)}
   .stat{border-right:none;border-bottom:1.5px solid var(--ink)}
   .stat:last-child{border-bottom:none}
@@ -690,6 +691,9 @@ section[id]{scroll-margin-top:calc(var(--header-h) + 8px)}
 
   .halls-gallery{grid-template-columns:1fr;gap:14px}
   .hall-hero{aspect-ratio:3/2}
+  .venue-head{padding:18px 20px;gap:10px 16px}
+  .venue-addr{font-size:16px;gap:10px;flex-wrap:wrap}
+  .vfact{padding:18px 20px}
   .venue-facts{grid-template-columns:1fr}
   .vfact{border-right:none;border-bottom:1.5px solid var(--line)}
   .vfact:last-child{border-bottom:none}
