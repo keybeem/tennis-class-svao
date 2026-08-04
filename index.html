@@ -209,6 +209,107 @@ header{
 @keyframes scroll{to{transform:translateX(-50%)}}
 
 /* ============================================================
+   ОТКРЫТЫЙ УРОК — временный баннер-афиша
+   ============================================================ */
+.open-lesson{
+  position:relative;overflow:hidden;
+  padding:72px 0 88px;
+  background:var(--clay);
+  color:var(--ink);
+}
+/* меловая рамка по периметру афиши */
+.open-lesson::before{
+  content:"";position:absolute;inset:20px;
+  border:1.5px dashed var(--white-line);border-radius:var(--radius);
+  pointer-events:none;
+}
+.open-lesson::after{
+  content:"";position:absolute;right:112px;top:34px;
+  width:54px;height:54px;border-radius:50%;
+  background:var(--ball);border:1.5px solid var(--ink);
+  box-shadow:0 10px 0 -6px var(--clay-deep);
+  transform:rotate(-14deg);
+}
+.open-lesson > .wrap{position:relative;z-index:1}
+.open-lesson-card{
+  position:relative;overflow:hidden;
+  display:grid;grid-template-columns:minmax(0,.82fr) minmax(0,1fr);
+  gap:28px;align-items:stretch;
+  padding:30px;border:1.5px solid var(--ink);border-radius:var(--radius);
+  background:var(--cream);box-shadow:0 18px 0 -8px var(--clay-deep);
+}
+.open-lesson-copy{
+  display:flex;flex-direction:column;justify-content:space-between;
+  gap:30px;min-width:0;
+}
+.open-lesson-eyebrow{
+  align-self:flex-start;margin-bottom:0;background:var(--cream-soft);
+}
+.open-lesson-eyebrow::before{
+  background:var(--ball);border:1.5px solid var(--ink);
+}
+.open-lesson-date{
+  font-family:"Unbounded",sans-serif;font-size:64px;
+  font-weight:900;line-height:.96;text-transform:uppercase;letter-spacing:0;
+  font-variant-numeric:tabular-nums;
+}
+.open-lesson-date b{
+  display:block;margin-top:12px;
+  font-size:32px;font-weight:700;color:var(--clay-deep);
+}
+.open-lesson-side{display:flex;flex-direction:column;gap:18px;min-width:0}
+.open-lesson-slots{
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;
+}
+.open-slot{
+  position:relative;overflow:hidden;
+  padding:24px 22px 22px;border:1.5px solid var(--ink);border-radius:var(--radius-s);
+  background:var(--cream-soft);box-shadow:0 14px 0 -8px var(--clay);
+}
+.open-slot .scoreboard-label{
+  font-family:"Unbounded",sans-serif;font-size:10px;font-weight:600;
+  letter-spacing:.22em;text-transform:uppercase;color:var(--clay-deep);
+  display:block;margin-bottom:10px;
+}
+.open-slot-time{
+  display:block;font-family:"Unbounded",sans-serif;
+  font-size:42px;font-weight:700;line-height:1;
+  font-variant-numeric:tabular-nums;
+}
+.open-slot-audience{
+  display:block;margin-top:8px;font-size:14px;font-weight:600;color:var(--clay-deep);
+}
+.open-lesson-cta{
+  align-self:stretch;justify-content:center;min-height:58px;padding:15px 24px;
+  white-space:normal;text-align:center;line-height:1.25;
+}
+.open-lesson-cta span{white-space:nowrap;font-variant-numeric:tabular-nums}
+@media (max-width:860px){
+  .open-lesson-card{grid-template-columns:1fr}
+  .open-lesson-copy{gap:22px}
+}
+@media (max-width:720px){
+  .open-lesson{padding:52px 0 68px}
+  .open-lesson::before{inset:12px}
+  .open-lesson::after{width:40px;height:40px;right:20px;top:22px}
+  .open-lesson-card{padding:24px 20px;gap:24px}
+  .open-lesson-date{font-size:50px}
+  .open-lesson-date b{font-size:26px}
+  .open-lesson-slots{grid-template-columns:1fr}
+}
+@media (max-width:480px){
+  .open-lesson{padding:44px 0 58px}
+  .open-lesson-card{padding:22px 18px}
+  .open-lesson-eyebrow{font-size:11px;padding:8px 14px}
+  .open-lesson-date{font-size:38px}
+  .open-lesson-date b{font-size:20px}
+  .open-lesson-cta{font-size:12px;padding:14px 18px}
+}
+@media (max-width:390px){
+  .open-lesson-cta span{white-space:normal}
+}
+
+/* ============================================================
    СЕКЦИИ — общий каркас
    ============================================================ */
 section{padding:100px 0}
@@ -787,6 +888,34 @@ section[id]{scroll-margin-top:calc(var(--header-h) + 8px)}
     </div>
   </div>
 </section>
+
+<!-- ===== ОТКРЫТЫЙ УРОК · событие 29.08.2026 (временный баннер) ===== -->
+<section id="open-lesson" class="open-lesson" aria-labelledby="openLessonTitle">
+  <div class="wrap">
+    <div class="open-lesson-card sr">
+      <div class="open-lesson-copy">
+        <h2 class="eyebrow open-lesson-eyebrow" id="openLessonTitle">Открытый урок</h2>
+        <p class="open-lesson-date">29&nbsp;августа <b>2026</b></p>
+      </div>
+      <div class="open-lesson-side">
+        <div class="open-lesson-slots" aria-label="Слоты открытого урока">
+          <div class="open-slot">
+            <span class="scoreboard-label" aria-hidden="true">Slot 01</span>
+            <span class="open-slot-time">11:00</span>
+            <span class="open-slot-audience">для&nbsp;детей</span>
+          </div>
+          <div class="open-slot">
+            <span class="scoreboard-label" aria-hidden="true">Slot 02</span>
+            <span class="open-slot-time">12:00</span>
+            <span class="open-slot-audience">для&nbsp;взрослых</span>
+          </div>
+        </div>
+        <a class="btn open-lesson-cta magnet" href="tel:+79161359160">Записаться по&nbsp;телефону <span>+7&nbsp;(916)&nbsp;135-91-60</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- /ОТКРЫТЫЙ УРОК -->
 
 <!-- ================= МЫ ПРЕДЛАГАЕМ ================= -->
 <section class="theme-dark on-dark" id="offer">
