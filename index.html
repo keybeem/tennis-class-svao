@@ -1455,6 +1455,19 @@ section[id]{scroll-margin-top:calc(var(--header-h) + 8px)}
       btn.addEventListener('mouseleave', function(){ btn.style.transform = ''; });
     });
   }
+
+  /* --- цель Метрики «Записаться»: помечаем, из какой секции пришёл клик --- */
+  document.addEventListener('click', function(e){
+    if (!e.target.closest || typeof window.ym !== 'function') return;
+    var link = e.target.closest('a[href="#contact"]');
+    if (!link) return;
+    var scope = link.closest('section, header');
+    var from = !scope ? 'other'
+      : scope.id ? scope.id
+      : scope.classList.contains('hero') ? 'hero'
+      : scope.tagName.toLowerCase();
+    ym(111328405, 'reachGoal', 'zapis', {section: from});
+  });
 })();
 </script>
 </body>
