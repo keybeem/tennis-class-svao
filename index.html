@@ -1651,6 +1651,38 @@ section[id]{scroll-margin-top:calc(var(--header-h) + 8px)}
   });
 
   /* --- форма заявки: валидация с судейским «аут!», отправка в WhatsApp --- */
+  /* --- телефон: авто-«+7 » и лёгкая маска; иностранные форматы не трогаем --- */
+  var phoneField = document.getElementById('bfPhone');
+  if (phoneField) {
+    var fmtRu = function(d){
+      var p = '+7';
+      if (d.length) p += ' ' + d.slice(0, 3);
+      if (d.length > 3) p += ' ' + d.slice(3, 6);
+      if (d.length > 6) p += '-' + d.slice(6, 8);
+      if (d.length > 8) p += '-' + d.slice(8, 10);
+      return p;
+    };
+    phoneField.addEventListener('focus', function(){
+      if (!phoneField.value.trim()) phoneField.value = '+7 ';
+    });
+    phoneField.addEventListener('blur', function(){
+      /* ничего не ввёл — возвращаем плейсхолдер и required-валидацию */
+      if (/^\+7[\s-]*$/.test(phoneField.value)) phoneField.value = '';
+    });
+    phoneField.addEventListener('input', function(){
+      var v = phoneField.value;
+      if (/^\+(?!7)/.test(v)) return;                       /* иностранный номер — свободный ввод */
+      if (phoneField.selectionStart !== v.length) return;   /* правка в середине — не дёргаем курсор */
+      var d = v.replace(/\D/g, '');
+      if (/^\+7/.test(v)) d = d.slice(1);                   /* видимый префикс +7 */
+      else if (d[0] === '7' || d[0] === '8') d = d.slice(1);/* набрали с привычной 8 (или 7) */
+      while (d.length > 10 && (d[0] === '7' || d[0] === '8')) d = d.slice(1); /* вставили с префиксом */
+      if (d === '8') { phoneField.value = '+7 '; return; }  /* одинокая 8 после +7 — транк-префикс */
+      if (!d) return;                                       /* пусто — даём спокойно стереть */
+      phoneField.value = fmtRu(d.slice(0, 10));
+    });
+  }
+
   var bookForm = document.getElementById('bookForm');
   if (bookForm) {
     var formLock = false; /* защита от даблклика: одна заявка — один WhatsApp */
