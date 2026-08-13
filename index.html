@@ -676,6 +676,112 @@ section[id]{scroll-margin-top:calc(var(--header-h) + 8px)}
 }
 .contact .map-link:hover{color:var(--ball);border-color:var(--ball)}
 .contact .map-link svg{width:17px;height:17px;flex:none}
+
+/* ---------- форма заявки: «подача — за вами» ---------- */
+.court-form{
+  max-width:640px;margin:0 auto 30px;padding:26px 26px 24px;
+  background:var(--cream);color:var(--ink);text-align:left;
+  border:1.5px solid var(--ink);border-radius:var(--radius);
+  box-shadow:0 18px 0 -8px rgba(29,47,34,.55);
+}
+.court-form .scoreboard-label{
+  font-family:"Unbounded",sans-serif;font-size:10px;font-weight:600;
+  letter-spacing:.22em;text-transform:uppercase;color:var(--clay-deep);
+  display:block;
+}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px}
+.form-field{display:flex;flex-direction:column;gap:7px}
+.form-field label{
+  font-family:"Unbounded",sans-serif;font-size:11px;font-weight:600;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--clay-deep);
+}
+.form-field input{
+  font:inherit;font-size:16px;color:var(--ink);width:100%;min-height:50px;
+  background:var(--cream-soft);border:1.5px solid var(--ink);border-radius:var(--radius-s);
+  padding:12px 16px;transition:border-color .2s, background .2s;
+}
+.form-field input::placeholder{color:rgba(29,47,34,.68)}
+.form-field input:focus{border-color:var(--clay);background:var(--cream)}
+/* форма — светлый остров внутри тёмной секции: фокус возвращаем терракотовым */
+.court-form :focus-visible{outline-color:var(--clay-deep)}
+/* а липкая панель — тёмная, там фокус лаймовый */
+.sticky-cta :focus-visible{outline-color:var(--ball)}
+/* «кто выходит на корт» — радио-чипы с мячом (шов — как у мяча в логотипе) */
+.form-who{margin:16px 0 0;border:0;padding:0}
+.form-who legend{
+  font-family:"Unbounded",sans-serif;font-size:11px;font-weight:600;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--clay-deep);
+  margin-bottom:10px;padding:0;
+}
+.who-chips{display:flex;gap:10px;flex-wrap:wrap}
+.who-chip{
+  position:relative;display:inline-flex;align-items:center;gap:9px;
+  padding:10px 16px;min-height:46px;border:1.5px solid var(--ink);border-radius:100px;
+  background:var(--cream-soft);cursor:pointer;font-weight:600;font-size:14px;
+  transition:background .2s, box-shadow .2s, transform .2s var(--ease);
+}
+.who-chip input{position:absolute;opacity:0;pointer-events:none}
+.who-chip .chip-ball{
+  width:17px;height:17px;border-radius:50%;flex:none;position:relative;
+  border:1.5px solid var(--ink);background:var(--cream);transition:background .2s;
+}
+.who-chip .chip-ball::after{content:"";position:absolute;inset:1px;border-radius:50%;border-top:1.5px solid var(--ink);transform:rotate(-30deg)}
+.who-chip:hover{transform:translateY(-1px)}
+/* фоллбек без :has — выбранный и сфокусированный чип видны и в старых браузерах */
+.who-chip input:checked + .chip-ball{background:var(--ball)}
+.who-chip input:focus-visible + .chip-ball{outline:3px solid var(--clay-deep);outline-offset:3px}
+.who-chip:has(input:checked){background:var(--ball);box-shadow:0 8px 0 -4px var(--clay)}
+.who-chip:has(input:checked) input:checked + .chip-ball{background:var(--cream)}
+.who-chip:has(input:focus-visible){outline:3px solid var(--clay-deep);outline-offset:3px}
+.who-chip:has(input:focus-visible) input:focus-visible + .chip-ball{outline:none}
+.form-foot{display:flex;align-items:center;gap:18px;margin-top:22px;flex-wrap:wrap}
+.serve-ball{
+  width:16px;height:16px;border-radius:50%;flex:none;
+  background:var(--ball);border:1.5px solid var(--ink);
+  transition:transform .3s var(--ease), opacity .3s;
+}
+.form-serve:hover .serve-ball{transform:translateY(-4px) rotate(20deg)}
+.court-form.is-sent .serve-ball{transform:translate(72px,-46px) rotate(200deg);opacity:0;transition:transform .6s var(--ease), opacity .5s .1s}
+.form-note{font-size:13px;line-height:1.45;color:rgba(29,47,34,.74);max-width:34ch;margin:0}
+.form-status{margin:14px 0 0;font-weight:600;font-size:14.5px;color:var(--ink);min-height:0}
+.form-status:empty{margin:0}
+.form-status.out{color:#8d2f0f}
+/* разделитель «или напрямую» — меловой пунктир */
+.contact-or{
+  display:flex;align-items:center;gap:14px;max-width:440px;margin:0 auto 22px;
+  font-family:"Unbounded",sans-serif;font-size:11px;font-weight:600;
+  letter-spacing:.2em;text-transform:uppercase;color:#f2e6d8;
+}
+.contact-or::before,.contact-or::after{content:"";flex:1;border-top:1.5px dashed rgba(245,236,220,.4)}
+/* кнопка WhatsApp — лаймовый акцент на тёмном */
+.btn.wa{background:var(--ball);border-color:var(--ball);color:var(--ink)}
+.btn.wa:hover{background:var(--cream);border-color:var(--cream);color:var(--ink)}
+.btn.wa svg{width:19px;height:19px;flex:none}
+.footer-tel .wa-link{display:inline-flex;align-items:center;gap:8px}
+.footer-tel .wa-link svg{width:16px;height:16px;flex:none}
+
+/* ---------- липкая панель на мобильных: позвонить / WhatsApp ---------- */
+.sticky-cta{
+  position:fixed;left:0;right:0;bottom:0;z-index:95;
+  display:none;gap:10px;
+  background:var(--ink);
+  padding:10px 14px calc(10px + env(safe-area-inset-bottom));
+  transform:translateY(110%);visibility:hidden;
+  transition:transform .35s var(--ease), visibility .35s;
+  box-shadow:0 -10px 28px rgba(29,47,34,.3);
+}
+.sticky-cta.show{transform:none;visibility:visible}
+.sticky-btn{
+  flex:1;display:inline-flex;align-items:center;justify-content:center;gap:9px;
+  min-height:52px;border-radius:14px;
+  font-family:"Unbounded",sans-serif;font-weight:600;font-size:13px;
+}
+.sticky-btn svg{width:18px;height:18px;flex:none}
+.sticky-call{background:var(--cream);color:var(--ink)}
+.sticky-wa{background:var(--ball);color:var(--ink)}
+@media (prefers-reduced-motion: reduce){
+  .sticky-cta,.serve-ball,.who-chip{transition:none}
+}
 /* три локации школы */
 .locations{
   display:grid;grid-template-columns:repeat(3,1fr);gap:14px;
@@ -804,6 +910,13 @@ section[id]{scroll-margin-top:calc(var(--header-h) + 8px)}
   .contact-actions{flex-direction:column;align-items:stretch}
   .contact-actions .btn{width:100%}
   .footer-grid{flex-direction:column;gap:24px}
+
+  .court-form{padding:20px 18px 18px}
+  .form-grid{grid-template-columns:1fr}
+  .form-foot{flex-direction:column;align-items:stretch;gap:12px}
+  .form-serve{width:100%}
+  .form-note{max-width:none;text-align:center}
+  .js .sticky-cta{display:flex}
 }
 @media (max-width:480px){
   /* CTA остаётся видимой и на телефоне — ужимаем, чтобы влезала */
@@ -1298,8 +1411,42 @@ section[id]{scroll-margin-top:calc(var(--header-h) + 8px)}
 <section class="contact on-dark" id="contact">
   <div class="wrap contact-inner sr">
     <h2>Запишитесь на <em>первое занятие</em></h2>
-    <p class="contact-sub">Позвоните — поможем записаться, подберём группу и&nbsp;удобное время.</p>
+    <p class="contact-sub">Оставьте заявку — перезвоним, подберём группу и&nbsp;удобное время.</p>
+
+    <!-- форма заявки: собирает сообщение и открывает WhatsApp с готовым текстом -->
+    <form class="court-form" id="bookForm" action="#contact">
+      <span class="scoreboard-label">Подача — за вами</span>
+      <div class="form-grid">
+        <div class="form-field">
+          <label for="bfName">Ваше имя</label>
+          <input id="bfName" type="text" autocomplete="name" placeholder="Например, Мария" required>
+        </div>
+        <div class="form-field">
+          <label for="bfPhone">Телефон</label>
+          <input id="bfPhone" type="tel" autocomplete="tel" inputmode="tel" placeholder="+7 916 000-00-00" required>
+        </div>
+      </div>
+      <fieldset class="form-who">
+        <legend>Кто выходит на корт</legend>
+        <div class="who-chips">
+          <label class="who-chip"><input type="radio" name="who" value="Ребёнок (4–17 лет)" checked><span class="chip-ball" aria-hidden="true"></span>Ребёнок&nbsp;4–17</label>
+          <label class="who-chip"><input type="radio" name="who" value="Взрослый"><span class="chip-ball" aria-hidden="true"></span>Взрослый</label>
+          <label class="who-chip"><input type="radio" name="who" value="Аренда корта"><span class="chip-ball" aria-hidden="true"></span>Аренда корта</label>
+        </div>
+      </fieldset>
+      <div class="form-foot">
+        <button class="btn form-serve" type="submit"><span class="serve-txt">Подать заявку</span><span class="serve-ball" aria-hidden="true"></span></button>
+        <p class="form-note">Откроется WhatsApp с&nbsp;готовым сообщением — останется нажать «Отправить».</p>
+      </div>
+      <p class="form-status" id="formStatus" role="status" aria-live="polite"></p>
+    </form>
+
+    <p class="contact-or" aria-hidden="true">или напрямую</p>
     <div class="contact-actions">
+      <a class="btn wa magnet" href="https://wa.me/79150222200?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5%21%20%D0%A5%D0%BE%D1%87%D1%83%20%D0%B7%D0%B0%D0%BF%D0%B8%D1%81%D0%B0%D1%82%D1%8C%D1%81%D1%8F%20%D0%B2%20%C2%AB%D0%A2%D0%B5%D0%BD%D0%BD%D0%B8%D1%81%20%D0%9A%D0%BB%D0%B0%D1%81%D1%81%C2%BB." target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.52.149-.174.198-.298.297-.497.1-.198.05-.371-.025-.52-.074-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Написать в&nbsp;WhatsApp
+      </a>
       <a class="btn on-clay magnet" href="tel:+79161359160">+7&nbsp;(916)&nbsp;135-91-60</a>
       <a class="btn outline-cream magnet" href="tel:+79150222200">+7&nbsp;(915)&nbsp;022-22-00</a>
     </div>
@@ -1329,6 +1476,10 @@ section[id]{scroll-margin-top:calc(var(--header-h) + 8px)}
       <div class="footer-tel">
         <a href="tel:+79161359160">+7&nbsp;(916)&nbsp;135-91-60</a>
         <a href="tel:+79150222200">+7&nbsp;(915)&nbsp;022-22-00</a>
+        <a class="wa-link" href="https://wa.me/79150222200?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5%21%20%D0%A5%D0%BE%D1%87%D1%83%20%D0%B7%D0%B0%D0%BF%D0%B8%D1%81%D0%B0%D1%82%D1%8C%D1%81%D1%8F%20%D0%B2%20%C2%AB%D0%A2%D0%B5%D0%BD%D0%BD%D0%B8%D1%81%20%D0%9A%D0%BB%D0%B0%D1%81%D1%81%C2%BB." target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.52.149-.174.198-.298.297-.497.1-.198.05-.371-.025-.52-.074-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Написать в&nbsp;WhatsApp
+        </a>
       </div>
     </div>
     <div class="footer-legal">
@@ -1337,6 +1488,18 @@ section[id]{scroll-margin-top:calc(var(--header-h) + 8px)}
     </div>
   </div>
 </footer>
+
+<!-- липкая панель на мобильных: появляется после первого экрана, прячется у контактов и футера -->
+<div class="sticky-cta" id="stickyCta">
+  <a class="sticky-btn sticky-call" href="tel:+79161359160">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+    Позвонить
+  </a>
+  <a class="sticky-btn sticky-wa" href="https://wa.me/79150222200?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5%21%20%D0%A5%D0%BE%D1%87%D1%83%20%D0%B7%D0%B0%D0%BF%D0%B8%D1%81%D0%B0%D1%82%D1%8C%D1%81%D1%8F%20%D0%B2%20%C2%AB%D0%A2%D0%B5%D0%BD%D0%BD%D0%B8%D1%81%20%D0%9A%D0%BB%D0%B0%D1%81%D1%81%C2%BB." target="_blank" rel="noopener">
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.52.149-.174.198-.298.297-.497.1-.198.05-.371-.025-.52-.074-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+    WhatsApp
+  </a>
+</div>
 
 <script>
 /* ============================================================
@@ -1468,6 +1631,92 @@ section[id]{scroll-margin-top:calc(var(--header-h) + 8px)}
       : scope.tagName.toLowerCase();
     ym(111328405, 'reachGoal', 'zapis', {section: from});
   });
+
+  /* --- цели Метрики: клики WhatsApp (wa_click) и телефона (call_click), с секцией --- */
+  function ctaSection(link){
+    var scope = link.closest('.sticky-cta, section, header, footer');
+    if (!scope) return 'other';
+    if (scope.classList.contains('sticky-cta')) return 'sticky';
+    if (scope.tagName === 'FOOTER') return 'footer';
+    if (scope.id) return scope.id;
+    if (scope.classList.contains('hero')) return 'hero';
+    return scope.tagName.toLowerCase();
+  }
+  document.addEventListener('click', function(e){
+    if (!e.target.closest || typeof window.ym !== 'function') return;
+    var wa = e.target.closest('a[href^="https://wa.me"]');
+    var tel = wa ? null : e.target.closest('a[href^="tel:"]');
+    if (wa) ym(111328405, 'reachGoal', 'wa_click', {wa_from: ctaSection(wa)});
+    else if (tel) ym(111328405, 'reachGoal', 'call_click', {call_from: ctaSection(tel)});
+  });
+
+  /* --- форма заявки: валидация с судейским «аут!», отправка в WhatsApp --- */
+  var bookForm = document.getElementById('bookForm');
+  if (bookForm) {
+    var formLock = false; /* защита от даблклика: одна заявка — один WhatsApp */
+    bookForm.addEventListener('submit', function(e){
+      e.preventDefault();
+      if (formLock) return;
+      var status = document.getElementById('formStatus');
+      var nameEl = document.getElementById('bfName');
+      var phoneEl = document.getElementById('bfPhone');
+      var serveTxt = bookForm.querySelector('.serve-txt');
+      var name = nameEl.value.trim();
+      var phone = phoneEl.value.trim();
+      var digits = phone.replace(/\D/g, '');
+      function out(msg, field){
+        status.classList.add('out'); status.textContent = msg;
+        field.setAttribute('aria-invalid', 'true');
+        field.setAttribute('aria-describedby', 'formStatus');
+        field.focus();
+      }
+      /* полный сброс прошлого состояния — и «аута», и «гейм-сет-матча» */
+      bookForm.classList.remove('is-sent');
+      if (serveTxt) serveTxt.textContent = 'Подать заявку';
+      status.classList.remove('out');
+      status.textContent = '';
+      [nameEl, phoneEl].forEach(function(f){ f.removeAttribute('aria-invalid'); f.removeAttribute('aria-describedby'); });
+      if (!name) return out('Аут! Подскажите, как вас зовут.', nameEl);
+      if (digits.length < 10) return out('Аут! В номере не хватает цифр — нужно минимум 10.', phoneEl);
+      var whoEl = bookForm.querySelector('input[name="who"]:checked');
+      var who = whoEl ? whoEl.value : 'не выбрано';
+      var text = 'Здравствуйте! Заявка с сайта «Теннис Класс».\n' +
+                 'Имя: ' + name + '\n' +
+                 'Телефон: ' + phone + '\n' +
+                 'Кто будет заниматься: ' + who;
+      if (typeof window.ym === 'function') ym(111328405, 'reachGoal', 'form_send', {form_who: who});
+      formLock = true;
+      setTimeout(function(){ formLock = false; }, 1500);
+      bookForm.classList.add('is-sent');
+      if (serveTxt) serveTxt.textContent = 'Гейм, сет, матч!';
+      status.textContent = 'Гейм, сет, матч! Открываем WhatsApp — сообщение уже готово.';
+      /* window.open с 'noopener' возвращает null даже при успехе — открываем без него,
+         opener гасим руками; если попап заблокирован (in-app браузеры) — идём по ссылке сами */
+      var waUrl = 'https://wa.me/79150222200?text=' + encodeURIComponent(text);
+      var win = window.open(waUrl, '_blank');
+      if (win) { try { win.opener = null; } catch (err) {} }
+      else { location.href = waUrl; }
+    });
+  }
+
+  /* --- липкая панель: после первого экрана и до контактов (дальше — футер, там она тоже лишняя) --- */
+  var stickyCta = document.getElementById('stickyCta');
+  var stickyStop = document.getElementById('contact');
+  if (stickyCta && stickyStop) {
+    var stickyTick = false;
+    var updSticky = function(){
+      var pastHero = window.scrollY > window.innerHeight * .8;
+      var beforeContact = stickyStop.getBoundingClientRect().top > window.innerHeight;
+      stickyCta.classList.toggle('show', pastHero && beforeContact);
+      stickyTick = false;
+    };
+    var onStickyMove = function(){
+      if (!stickyTick) { requestAnimationFrame(updSticky); stickyTick = true; }
+    };
+    window.addEventListener('scroll', onStickyMove, {passive:true});
+    window.addEventListener('resize', onStickyMove); /* поворот экрана меняет геометрию */
+    updSticky();
+  }
 })();
 </script>
 </body>
